@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar erp-core/target/erp-core-1.0-SNAPSHOT.jar
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar erp-core/target/erp-core-1.0-SNAPSHOT.jar ru.aora.erp.ErpApp
