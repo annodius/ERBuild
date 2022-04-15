@@ -1,5 +1,6 @@
 package ru.aora.erp.entity.dto.compose;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import ru.aora.erp.model.entity.business.Contract;
 import ru.aora.erp.model.entity.business.Counteragent;
@@ -11,10 +12,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
+@Ignore
 public final class KsContractCounteragentDtoUtilsTest {
 
     @Test

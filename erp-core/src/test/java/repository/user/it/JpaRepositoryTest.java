@@ -1,5 +1,6 @@
 package repository.user.it;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import ru.aora.erp.repository.jpa.JpaUserRepository;
 
 import java.util.Optional;
 
-//@Ignore
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RepositoryConfig.class})
 public class JpaRepositoryTest {
