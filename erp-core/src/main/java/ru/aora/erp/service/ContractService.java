@@ -48,6 +48,3 @@ public class ContractService {
         return contractId;
     }
 }
-
-
-
