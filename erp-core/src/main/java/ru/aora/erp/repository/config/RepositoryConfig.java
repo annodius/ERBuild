@@ -17,6 +17,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -72,6 +74,17 @@ public class RepositoryConfig {
         dataSource.setDriverClassName(
                 Objects.requireNonNull(env.getProperty(JDBC_DRIVER_CLASS_NAME))
         );
+        return dataSource;
+    }
+
+    @Bean(name = "postgres-db")
+    public DataSource postgresDataSource() throws URISyntaxException {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        URI dbUri = new URI(System.getenv("DATABASE_URL"));
+
+        dataSource.setUsername(dbUri.getUserInfo().split(":")[0]);
+        dataSource.setPassword(dbUri.getUserInfo().split(":")[1]);
+        dataSource.setUrl("jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?sslmode=require");
         return dataSource;
     }
 

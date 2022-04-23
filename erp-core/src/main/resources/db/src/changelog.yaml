@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: "db/src/changelog/000_init_db_grants.yaml"
