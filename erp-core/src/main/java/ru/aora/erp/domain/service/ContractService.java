@@ -33,6 +33,3 @@ public class ContractService {
                 .orElseGet(() -> MsgServiceResult.failed("Contract to delete not found"));
     }
 }
-
-
-
