@@ -5,3 +5,9 @@ databaseChangeLog:
       changes:
         - sqlFile:
             path: "db/src/sql/000_01_grants.sql"
+  - changeSet:
+      id: 1
+      author: a.overin
+      changes:
+        - sqlFile:
+            path: "db/src/sql/000_02_struct.sql"
