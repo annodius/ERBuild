@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 
 @Configuration
-@PropertySource("db.properties")
 @EnableJpaRepositories(
         basePackages = "ru.aora.erp.repository",
         entityManagerFactoryRef = "userEntityManager",
@@ -55,27 +54,27 @@ public class RepositoryConfig {
 
     @Bean
     @Primary
-    public LocalContainerEntityManagerFactoryBean userEntityManager() {
+    public LocalContainerEntityManagerFactoryBean userEntityManager() throws URISyntaxException {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         em.setJpaPropertyMap(this.jpaPropertyMap());
         em.setPackagesToScan(BASE_PACKAGES_TO_ENTITY_SCAN);
-        em.setDataSource(this.userDataSource());
+        em.setDataSource(this.postgresDataSource());
         return em;
     }
 
-    @Bean
-    @Primary
-    public DataSource userDataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setUsername(env.getProperty(JDBC_USER));
-        dataSource.setPassword(env.getProperty(JDBC_PASS));
-        dataSource.setUrl(env.getProperty(USER_JDBC_URL));
-        dataSource.setDriverClassName(
-                Objects.requireNonNull(env.getProperty(JDBC_DRIVER_CLASS_NAME))
-        );
-        return dataSource;
-    }
+//    @Bean
+//    @Primary
+//    public DataSource userDataSource() {
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//        dataSource.setUsername(env.getProperty(JDBC_USER));
+//        dataSource.setPassword(env.getProperty(JDBC_PASS));
+//        dataSource.setUrl(env.getProperty(USER_JDBC_URL));
+//        dataSource.setDriverClassName(
+//                Objects.requireNonNull(env.getProperty(JDBC_DRIVER_CLASS_NAME))
+//        );
+//        return dataSource;
+//    }
 
     @Bean(name = "postgres-db")
     public DataSource postgresDataSource() throws URISyntaxException {
@@ -90,7 +89,7 @@ public class RepositoryConfig {
 
     @Primary
     @Bean
-    public PlatformTransactionManager userTransactionManager() {
+    public PlatformTransactionManager userTransactionManager() throws URISyntaxException {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(this.userEntityManager().getObject());
         return transactionManager;
@@ -98,8 +97,8 @@ public class RepositoryConfig {
 
     @Primary
     @Bean
-    public JdbcTemplate jdbcTemplate() {
-        return new JdbcTemplate(userDataSource());
+    public JdbcTemplate jdbcTemplate() throws URISyntaxException {
+        return new JdbcTemplate(postgresDataSource());
     }
 
     private Map<String, Object> jpaPropertyMap() {
