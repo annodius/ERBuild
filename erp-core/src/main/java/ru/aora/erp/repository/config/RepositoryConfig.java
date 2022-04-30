@@ -87,6 +87,17 @@ public class RepositoryConfig {
         return dataSource;
     }
 
+    @Bean(name = "postgres-db")
+    public DataSource postgresDataSource() throws URISyntaxException {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        URI dbUri = new URI(System.getenv("DATABASE_URL"));
+
+        dataSource.setUsername(dbUri.getUserInfo().split(":")[0]);
+        dataSource.setPassword(dbUri.getUserInfo().split(":")[1]);
+        dataSource.setUrl("jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?sslmode=require");
+        return dataSource;
+    }
+
     @Primary
     @Bean
     public PlatformTransactionManager userTransactionManager() throws URISyntaxException {
