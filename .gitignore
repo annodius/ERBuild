@@ -16,3 +16,6 @@
 # IntelliJ
 */out/*
 */target/*
+
+db/generated
+/*/databasechangelog.csv

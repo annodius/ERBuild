@@ -6,6 +6,17 @@ spring:
   profiles:
     active: PROD
 #    active: DEV
+  liquibase:
+    change-log: classpath:db/src/changelog.yaml
+    enabled: true
+    url: ${spring.datasource.url}
+    password: ${spring.datasource.password}
+    user: ${spring.datasource.username}
+  datasource:
+    url: ${JDBC_DATABASE_URL}
+    password: ${JDBC_DATABASE_PASSWORD}
+    username: ${JDBC_DATABASE_USERNAME}
+
 #  thymeleaf:
 #    cache: false
 #    check-template: true

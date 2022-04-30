@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.StringJoiner;
 
 @Entity
-@Table(name = "[user]")
+@Table(name = "users")
 public class DbUser implements Serializable, Deactivatable {
 
     private static final long serialVersionUID = -8446608340994054062L;
