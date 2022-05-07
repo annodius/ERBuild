@@ -17,3 +17,9 @@ databaseChangeLog:
       changes:
         - sqlFile:
             path: "db/src/sql/000_03_modify_column.sql"
+  - changeSet:
+      id: 3
+      author: a.overin
+      changes:
+        - sqlFile:
+            path: "db/src/sql/000_04_modify_column.sql"
