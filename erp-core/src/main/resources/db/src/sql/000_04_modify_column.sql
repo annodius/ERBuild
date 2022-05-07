@@ -1,3 +1,9 @@
+alter table ks
+    drop constraint ks_id_contract_fkey;
+
+alter table Contract
+    drop constraint contract_id_counteragent_fkey;
+
 alter table Counteragent
     alter column id type varchar(20);
 
