@@ -1,6 +1,5 @@
 package ru.aora.erp.model.entity.db.user;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Where;
 import ru.aora.erp.model.entity.db.Deactivatable;
 
@@ -17,8 +16,7 @@ public class DbUser implements Serializable, Deactivatable {
     private static final long serialVersionUID = -8446608340994054062L;
 
     @Id
-    @GenericGenerator(name = "generator", strategy = "guid")
-    @GeneratedValue(generator = "generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "uniqueidentifier")
     private String id;
 

@@ -1,13 +1,6 @@
 package ru.aora.erp.model.entity.db;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,8 +13,7 @@ public class DbKs implements Serializable, Deactivatable {
     private static final long serialVersionUID = 6765412988706551918L;
 
     @Id
-    @GenericGenerator(name = "generator", strategy = "guid")
-    @GeneratedValue(generator = "generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "uniqueidentifier")
     private String id;
 

@@ -1,20 +1,13 @@
 package ru.aora.erp.model.entity.db.user;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "user_role")
 public class DbRole {
 
     @Id
-    @GenericGenerator(name = "generator", strategy = "guid")
-    @GeneratedValue(generator = "generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "uniqueidentifier", unique = true)
     private String id;
 

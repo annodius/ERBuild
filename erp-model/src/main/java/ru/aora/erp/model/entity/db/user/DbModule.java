@@ -1,17 +1,13 @@
 package ru.aora.erp.model.entity.db.user;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
 @Table(name = "user_module")
 public class DbModule {
 
     @Id
-    @GenericGenerator(name = "generator", strategy = "guid")
-    @GeneratedValue(generator = "generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "uniqueidentifier", unique = true)
     private String id;
 

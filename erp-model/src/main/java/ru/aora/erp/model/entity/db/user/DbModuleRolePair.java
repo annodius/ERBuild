@@ -1,15 +1,8 @@
 package ru.aora.erp.model.entity.db.user;
 
-import org.hibernate.annotations.GenericGenerator;
 import ru.aora.erp.model.entity.db.Deactivatable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -18,8 +11,7 @@ import java.time.LocalDateTime;
 public class DbModuleRolePair implements Serializable, Deactivatable {
 
     @Id
-    @GenericGenerator(name = "generator", strategy = "guid")
-    @GeneratedValue(generator = "generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "uniqueidentifier")
     private String id;
 
