@@ -10,7 +10,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col_xxs_12 col_xs_12 col_s_12 col_m_8 col_l_8">
-                            <div class="module_title">Гарантийка <i class="fal fa-arrow-right"></i> Контрагенты</div>
+                            <div class="module_title">Гарантийка <i class="fal fa-arrow-right"></i>  Контрагенты</div>
                         </div>
 
                         <div class="col_xxs_12 col_xs_12 col_s_12 col_m_4 col_l_4">
@@ -65,6 +65,17 @@
                 </div>
             </div>
 
+            <!--general information container options start-->
+
+                <div class="module_header size_is">
+                <div class="module_title">
+                            <p></p><span><a href="javascript:;"><strong> <div align ="right" th:text="'Итого сумма по контрактам: '+ ${total_results.contractTotalCounteragentSum}+' руб.'"></div></strong></a></span>
+                            <p>
+                            <span><a href="javascript:;"><strong> <div align ="right" th:text="'Закрыто актами: '+ ${total_results.ksTotalCounteragentSum}+' руб.'"></div></strong></a></span>
+                </div>
+                </div>
+            <!--general information container options end-->
+
             <!--general container options end-->
             <div class="module_content module_guarantee">
                 <div class="container">
@@ -93,6 +104,11 @@
                                             <em>Имя группы</em>
                                             <div class="sign"><i class="fas fa-user"></i></div>
                                             <input type="text" class="inp" th:id ="'group_name'" name="group_Name" th:value="''"/>
+                                        </label>
+                                        <label class="fld filler">
+                                            <em>ИНН Организации</em>
+                                            <div class="sign"><i class="fas fa-user"></i></div>
+                                            <input type="text" class="inp" th:id ="'inn'" name="inn" th:value="''"/>
                                         </label>
                                         <label class="fld filler">
                                             <em>Фамилия директора</em>
@@ -127,7 +143,7 @@
                                         </label>
                                         <div class="clear_after">
                                             <button th:onclick="saveCounteragentRequest()" name="addcounteragent" value="addcounteragent" class="bttn bttn_submit bttn_40 right rds_5" th:data-toggle="'addcounteragent'" >Сохранить</button>
-                                            <a href="javascript:;" th:onclick="getFragmentAndChangeDiv('#content','/counteragent')" class="bttn bttn_40 right rds_5 toggle_cb" th:data-toggle="'addcounteragent'">Закрыть</a>
+                                            <a href="javascript:;" th:onclick="getFragmentParamAndChangeDiv('#content','/counteragent',,,,,,0)" class="bttn bttn_40 right rds_5 toggle_cb" th:data-toggle="'addcounteragent'">Закрыть</a>
                                         </div>
 
                                     </div>
@@ -155,7 +171,7 @@
                                                 <input type="checkbox" class="www" />
                                                 <a ></a>
 
-                                                <strong> <div th:text="${counteragent.counteragentName}" href="#" th:onclick="getFragmentParamAndChangeDiv('#content','/contract',[[${counteragent.id}]],[[${counteragent.id}]],[[${counteragent.counteragentName}]],[[${counteragent.counteragentName}]],0)">
+                                                <strong> <div th:text="${counteragent.counteragentName}" href="#" th:onclick="getFragmentParamAndChangeDiv('#content','/contract',[[${counteragent.id}]],[[${counteragent.id}]],[[${counteragent.counteragentName}]],[[${counteragent.counteragentName}]],[[${counteragent.counteragentName}]],0)">
 
                                                 </div></strong>
 
@@ -166,7 +182,7 @@
                                             <div class="more animate_150">
 
                                                 <a>ИНН № </a>
-                                                <a>7725104256</a>
+                                                <a><span th:text="${counteragent.inn}"></span></a>
 
                                             </div>
 
@@ -218,6 +234,11 @@
                                                     <em>Имя группы</em>
                                                     <div class="sign"><i class="fas fa-user"></i></div>
                                                     <input type="text" class="inp" th:id ="'group_name_'+*{id}" name="group_Name" th:value="*{groupName}"/>
+                                                </label>
+                                                <label class="fld filler">
+                                                    <em>ИНН Организации</em>
+                                                    <div class="sign"><i class="fas fa-user"></i></div>
+                                                    <input type="text" class="inp" th:id ="'inn_'+*{id}" name="inn" th:value="*{inn}"/>
                                                 </label>
                                                 <label class="fld filler">
                                                     <em>Фамилия директора</em>

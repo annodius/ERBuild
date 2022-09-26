@@ -2,6 +2,7 @@ package ru.aora.erp.model.entity.db;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -38,6 +39,9 @@ public class DbCounteragent implements Serializable,Deactivatable {
 
     @Column(name = "address")
     private String address;
+
+    @Column(name = "inn")
+    private BigDecimal inn;
 
     @Column(name = "deactivation_date")
     private LocalDateTime deactivationDate;
@@ -133,6 +137,15 @@ public class DbCounteragent implements Serializable,Deactivatable {
         return this;
     }
 
+    public BigDecimal getInn() {
+        return inn;
+    }
+
+    public DbCounteragent setInn(BigDecimal inn) {
+        this.inn = inn;
+        return this;
+    }
+
     public LocalDateTime getDeactivationDate() {
         return deactivationDate;
     }
@@ -163,6 +176,7 @@ public class DbCounteragent implements Serializable,Deactivatable {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", mail='" + mail + '\'' +
                 ", address='" + address + '\'' +
+                ", inn='" + inn + '\'' +
                 ", deactivationDate=" + deactivationDate +
                 ", deactivated=" + activeStatus +
                 '}';

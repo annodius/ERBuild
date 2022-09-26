@@ -2,6 +2,7 @@ package ru.aora.erp.model.entity.db;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -30,6 +31,9 @@ public class DbContract implements Serializable,Deactivatable {
 
     @Column(name = "contract_subject")
     private String contractSubject;
+
+    @Column(name = "contract_sum")
+    private BigDecimal contractSum;
 
     @Column(name = "deactivation_date")
     private LocalDateTime deactivationDate;
@@ -98,6 +102,15 @@ public class DbContract implements Serializable,Deactivatable {
         return this;
     }
 
+    public BigDecimal getContractSum() {
+        return contractSum;
+    }
+
+    public DbContract setContractSum(BigDecimal contractSum) {
+        this.contractSum = contractSum;
+        return this;
+    }
+
     public LocalDateTime getDeactivationDate() {
         return deactivationDate;
     }
@@ -125,6 +138,7 @@ public class DbContract implements Serializable,Deactivatable {
                 ", contractDate=" + contractDate +
                 ", contractNumber='" + contractNumber + '\'' +
                 ", contractSubject='" + contractSubject + '\'' +
+                ", contractSum='" + contractSum + '\'' +
                 ", deactivationDate=" + deactivationDate +
                 ", deactivated=" + activeStatus +
                 '}';

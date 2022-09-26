@@ -57,7 +57,7 @@ function RefreshFragmentChangeDiv() {
  * @param reference
  * @param field
  */
-function getFragmentParamAndChangeDiv(divId, reference, id_grand_parent, id_parent, parent_name, grand_parent_name, delay) {
+function getFragmentParamAndChangeDiv(divId, reference, id_grand_parent, id_parent, parent_name, grand_parent_name, total_results, delay) {
     var delay = delay;
 
     $.ajax({
@@ -65,7 +65,7 @@ function getFragmentParamAndChangeDiv(divId, reference, id_grand_parent, id_pare
             Accept: "application/json; charset=utf-8", "Content-Type": "text/html; charset=utf-8"},
         url: reference,
         method: "GET",
-        data: {id_grand_parent: id_grand_parent, id_parent: id_parent, parent_name: parent_name, grand_parent_name: grand_parent_name},
+        data: {id_grand_parent: id_grand_parent, id_parent: id_parent, parent_name: parent_name, grand_parent_name: grand_parent_name, total_results: total_results},
         success: function (data, textStatus, response) {
 
 
@@ -118,6 +118,8 @@ function saveCounteragentRequest() {
             $("#counteragent_name").val(),
         groupName:null,
         //$("#group_name").val(),
+        inn:
+            $("#inn").val(),
         directorFirstName:
             $("#director_first_name").val(),
         directorSurname:
@@ -162,7 +164,9 @@ function saveContractRequest(counteragent_id, counteragent_name) {
         contractNumber:
             $("#contract_number").val(),
         contractSubject:
-            $("#contract_subject").val()
+            $("#contract_subject").val(),
+        contractSum:
+            $("#contract_sum").val()
     };
 
     $.ajax({
@@ -249,7 +253,7 @@ function updateKSRequest(KSId, contractId, counteragent_id, contract_name, count
         garantDate:
             $("#garant_date_".concat(KSId)).val(),
         paymentStatus:
-            $("#payment_switcher_".concat(KSId)).val()
+            $("#payment_switcher_".concat(KSId)).val(),
     };
 
     $.ajax({
@@ -283,7 +287,9 @@ function updateContractRequest(contractId, counteragentId, counteragentName) {
         contractDate:
             $("#contract_date_".concat(contractId)).val(),
         contractSubject:
-            $("#contract_subject_".concat(contractId)).val()
+            $("#contract_subject_".concat(contractId)).val(),
+        contractSum:
+            $("#contract_sum_".concat(contractId)).val()
     };
 
     $.ajax({
@@ -312,6 +318,8 @@ function updateCounteragentRequest(counteragentId) {
             $("#counteragent_name_".concat(counteragentId)).val(),
         groupName:null,
         //$("#group_name_".concat(counteragentId)).val(),
+        inn:
+            $("#inn_".concat(counteragentId)).val(),
         directorFirstName:
             $("#director_first_name_".concat(counteragentId)).val(),
         directorSurname:
@@ -348,6 +356,41 @@ function updateCounteragentRequest(counteragentId) {
             alert(jqXHR.status + ' ' + jqXHR.responseText);
         }
     });
+
+    function updateUsersetRequest() {
+        var JSONUserset = {
+            id: usersetId,
+            userThemeColor:
+                $("#user_theme_color_".concat(usersetId)).val(),
+            userThemePattern:
+                $("#user_theme_pattern_".concat(usersetId)).val(),
+            userThemeZoom:
+                $("#user_theme_zoom_".concat(usersetId)).val()
+        };
+
+        $.ajax({
+            type: 'PUT',
+            url: '/fragment/topbar',
+            contentType: 'application/json; charset=utf-8',
+            accessControlAllowOrigin:"http://localhost:8080",
+            data: JSON.stringify(JSONUserset),
+            async: true,
+            success: function (JSONUserset) {
+                console.log("SUCCESS: ", JSONUserset);
+                //$(url).appendTo('#content');
+
+                getFragmentAndChangeDiv('#content','/counteragent');
+                //$('#content').load('/counteragent');
+                //$('#content').addClass('popover_menu');
+                //$('#content').addClass('module_menu');
+
+                //location.reload();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.status + ' ' + jqXHR.responseText);
+            }
+        });
+    }
 }
 
 function error_dialog(error_message) {

@@ -38,12 +38,14 @@ public final class GarantResultController {
     @SuppressWarnings("WeakerAccess")
     static class GarantResultDto {
         public BigDecimal notPaidKsTotalSum = BigDecimal.ZERO;
+        public BigDecimal ksTotalSum = BigDecimal.ZERO;
         public long minDaysToGarantDate = Long.MAX_VALUE;
 
         @Override
         public String toString() {
             return new StringJoiner(", ", GarantResultDto.class.getSimpleName() + "[", "]")
                     .add("notPaidKsTotalSum=" + notPaidKsTotalSum)
+                    .add("ksTotalSum=" + ksTotalSum)
                     .add("minDaysToGarantDate=" + minDaysToGarantDate)
                     .toString();
         }
@@ -55,6 +57,9 @@ public final class GarantResultController {
             if (ks != null && !ks.getPaymentStatus()) {
                 if (ks.getGarantSum() != null) {
                     garantResult.notPaidKsTotalSum = garantResult.notPaidKsTotalSum.add(ks.getGarantSum());
+                }
+                if (ks.getKsSum() != null) {
+                    garantResult.ksTotalSum = garantResult.ksTotalSum.add(ks.getKsSum());
                 }
                 if (ks.getGarantDate() != null) {
                     garantResult.minDaysToGarantDate = minDaysToGarantDate(

@@ -17,7 +17,8 @@ public final class CounteragentDtoMapper {
                 .setGroupName(counteragent.getGroupName())
                 .setId(counteragent.getId())
                 .setMail(counteragent.getMail())
-                .setPhoneNumber(counteragent.getPhoneNumber());
+                .setPhoneNumber(counteragent.getPhoneNumber())
+                .setInn(counteragent.getInn());
     }
 
     public static Counteragent toCounteragent(CounteragentDto dto) {
@@ -30,7 +31,8 @@ public final class CounteragentDtoMapper {
                 .setGroupName(dto.getGroupName())
                 .setId(dto.getId())
                 .setMail(dto.getMail())
-                .setPhoneNumber(dto.getPhoneNumber());
+                .setPhoneNumber(dto.getPhoneNumber())
+                .setInn(dto.getInn());
     }
 
     public static CounteragentListDto toListDto(List<Counteragent> counteragents) {

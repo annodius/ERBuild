@@ -8,14 +8,14 @@ spring:
 #    active: DEV
   liquibase:
     change-log: classpath:db/src/changelog.yaml
-    enabled: true
+    enabled: false
     url: ${spring.datasource.url}
     password: ${spring.datasource.password}
     user: ${spring.datasource.username}
   datasource:
-    url: ${JDBC_DATABASE_URL}
-    password: ${JDBC_DATABASE_PASSWORD}
-    username: ${JDBC_DATABASE_USERNAME}
+    url: postgres://ggoktkxtomizma:f5e9844085514ff9fa07c26533d9de7aa099ad9c54efa32078555932a426565f@ec2-54-75-184-144.eu-west-1.compute.amazonaws.com:5432/dfnffn8bn8u0gi
+    password: f5e9844085514ff9fa07c26533d9de7aa099ad9c54efa32078555932a426565f
+    username: ggoktkxtomizma
 
 #  thymeleaf:
 #    cache: false

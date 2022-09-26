@@ -1,5 +1,10 @@
 package ru.aora.erp.presentation.entity.dto.contract;
 
+import ru.aora.erp.presentation.entity.dto.ks.KsDto;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.StringJoiner;
 
@@ -11,6 +16,9 @@ public final class ContractDto {
     private LocalDate contractDate;
     private String contractNumber;
     private String contractSubject;
+    @NotNull
+    @Positive
+    private BigDecimal contractSum;
 
     public String getId() {
         return id;
@@ -65,6 +73,15 @@ public final class ContractDto {
         this.contractSubject = contractSubject;
         return this;
     }
+    public BigDecimal getContractSum() {
+        return contractSum;
+    }
+
+    public ContractDto setContractSum(BigDecimal contractSum) {
+        this.contractSum = contractSum;
+        return this;
+    }
+
 
     @Override
     public String toString() {
@@ -75,6 +92,7 @@ public final class ContractDto {
                 .add("contractDate='" + contractDate + "'")
                 .add("contractNumber='" + contractNumber + "'")
                 .add("contractSubject='" + contractSubject + "'")
+                .add("contractSum='" + contractSum + "'")
                 .toString();
     }
 }

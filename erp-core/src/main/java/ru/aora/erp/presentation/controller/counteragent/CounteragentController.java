@@ -2,23 +2,28 @@ package ru.aora.erp.presentation.controller.counteragent;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import ru.aora.erp.domain.service.ContractService;
+import ru.aora.erp.domain.service.KsService;
+import ru.aora.erp.model.entity.business.Contract;
+import ru.aora.erp.model.entity.business.Ks;
 import ru.aora.erp.presentation.controller.exception.DtoValidationException;
+import ru.aora.erp.presentation.controller.garant.GarantResultController;
+import ru.aora.erp.presentation.entity.dto.contract.ContractListDto;
 import ru.aora.erp.presentation.entity.dto.counteragent.CounteragentDto;
 import ru.aora.erp.presentation.entity.dto.counteragent.CounteragentDtoMapper;
 import ru.aora.erp.presentation.entity.dto.counteragent.CounteragentListDto;
 import ru.aora.erp.domain.service.CounteragentService;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.Map;
+import java.util.StringJoiner;
 
+import static java.util.Objects.requireNonNull;
+import static ru.aora.erp.presentation.entity.dto.contract.ContractDtoMapper.toListDto;
 import static ru.aora.erp.presentation.entity.dto.counteragent.CounteragentDtoMapper.toCounteragent;
 
 @Controller
@@ -27,18 +32,57 @@ public final class CounteragentController {
 
     private static final String GARANT_MAPPING = "counteragents";
     private static final String CONTRACTOR_DTO_MODEL = "counteragentDto";
-
+    private static final String TOTAL_RESULTS = "total_results";
     private final CounteragentService counteragentService;
+    private final KsService ksService;
+    private final ContractService contractService;
 
-    public CounteragentController(CounteragentService counteragentService) {
+    public CounteragentController(CounteragentService counteragentService, KsService ksService, ContractService contractService) {
         this.counteragentService = counteragentService;
+        this.ksService = ksService;
+        this.contractService = contractService;
     }
 
     @GetMapping
-    public String counteragentForm(Map<String, Object> model) {
+    public String counteragentForm(
+            Map<String, Object> model) {
         final CounteragentListDto listDto = CounteragentDtoMapper.toListDto(counteragentService.loadAll());
         model.put(CONTRACTOR_DTO_MODEL, listDto);
+        model.put(TOTAL_RESULTS, counteragentResult(ksService.loadAll(),contractService.loadAll()));
         return GARANT_MAPPING;
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    static class CounteragentResultDto {
+        public BigDecimal ksTotalCounteragentSum = BigDecimal.ZERO;
+        public BigDecimal contractTotalCounteragentSum = BigDecimal.ZERO;
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", CounteragentResultDto.class.getSimpleName() + "[", "]")
+                    .add("ksTotalCounteragentSum=" + ksTotalCounteragentSum)
+                    .add("contractTotalCounteragentSum=" + contractTotalCounteragentSum)
+                    .toString();
+        }
+    }
+
+    private static CounteragentResultDto counteragentResult(Collection<Ks> ksList,Collection<Contract> contractList) {
+        final CounteragentResultDto counteragentResult = new CounteragentResultDto();
+        for (Contract contract : requireNonNull(contractList)) {
+            if (contract != null && contract.getActiveStatus() == 0) {
+                if (contract.getContractSum() != null) {
+                    counteragentResult.contractTotalCounteragentSum = counteragentResult.contractTotalCounteragentSum.add(contract.getContractSum());
+                }
+            }
+        }
+        for (Ks ks : requireNonNull(ksList)) {
+            if (ks != null && ks.getActiveStatus() == 0) {
+                if (ks.getKsSum() != null) {
+                    counteragentResult.ksTotalCounteragentSum = counteragentResult.ksTotalCounteragentSum.add(ks.getKsSum());
+                }
+            }
+        }
+        return counteragentResult;
     }
 
     @PutMapping

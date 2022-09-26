@@ -9,6 +9,7 @@ public final class ContractDtoMapper {
 
     public static ContractDto toContractDto(Contract contract) {
         return new ContractDto()
+                .setContractSum(contract.getContractSum())
                 .setContractDate(contract.getContractDate())
                 .setContractNumber(contract.getContractNumber())
                 .setContractSubject(contract.getContractSubject())
@@ -19,6 +20,7 @@ public final class ContractDtoMapper {
 
     public static Contract toContract(ContractDto dto) {
         return new Contract()
+                .setContractSum(dto.getContractSum())
                 .setContractDate(dto.getContractDate())
                 .setContractNumber(dto.getContractNumber())
                 .setContractSubject(dto.getContractSubject())

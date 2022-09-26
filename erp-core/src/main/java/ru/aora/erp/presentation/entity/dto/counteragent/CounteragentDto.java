@@ -1,5 +1,6 @@
 package ru.aora.erp.presentation.entity.dto.counteragent;
 
+import java.math.BigDecimal;
 import java.util.StringJoiner;
 
 public final class CounteragentDto {
@@ -13,6 +14,7 @@ public final class CounteragentDto {
     private String phoneNumber;
     private String mail;
     private String address;
+    private BigDecimal inn;
 
     public String getId() {
         return id;
@@ -94,6 +96,14 @@ public final class CounteragentDto {
         this.address = address;
         return this;
     }
+    public BigDecimal getInn() {
+        return inn;
+    }
+
+    public CounteragentDto setInn(BigDecimal inn) {
+        this.inn = inn;
+        return this;
+    }
 
     @Override
     public String toString() {
@@ -107,6 +117,7 @@ public final class CounteragentDto {
                 .add("phoneNumber='" + phoneNumber + "'")
                 .add("mail='" + mail + "'")
                 .add("address='" + address + "'")
+                .add("inn='" + inn + "'")
                 .toString();
     }
 }

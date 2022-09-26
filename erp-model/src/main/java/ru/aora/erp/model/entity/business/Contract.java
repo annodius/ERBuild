@@ -1,5 +1,6 @@
 package ru.aora.erp.model.entity.business;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -11,6 +12,7 @@ public class Contract {
     private LocalDate contractDate;
     private String contractNumber;
     private String contractSubject;
+    private BigDecimal contractSum;
     private LocalDateTime deactivationDate;
     private Integer activeStatus;
 
@@ -65,6 +67,15 @@ public class Contract {
 
     public Contract setContractSubject(String contractSubject) {
         this.contractSubject = contractSubject;
+        return this;
+    }
+
+    public BigDecimal getContractSum() {
+        return contractSum;
+    }
+
+    public Contract setContractSum(BigDecimal contractSum) {
+        this.contractSum = contractSum;
         return this;
     }
 

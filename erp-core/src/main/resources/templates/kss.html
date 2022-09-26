@@ -74,6 +74,18 @@
             </div>
             <!--general container options end-->
 
+            <!--general information container options start-->
+
+            <div class="module_header size_is">
+                <div class="module_title">
+                    <p></p><span><a href="javascript:;"><strong> <div align ="right" th:text="'Сумма по контракту: '+ ${total_results.contractCurrentSum}+' руб.'"></div></strong></a></span>
+                    <p>
+                        <span><a href="javascript:;"><strong> <div align ="right" th:text="'Закрыто актами: '+ ${total_results.ksContractSum}+' руб.'"></div></strong></a></span>
+                </div>
+            </div>
+            <!--general information container options end-->
+
+
             <!-- Add KS menu-->
             <div th:class="'addKS'+' edit hide_me'"  th:object="${ksDto}">
                 <div class="row no_gutter">
@@ -245,29 +257,34 @@
                                                                           th:action="@{/getPaymentStatusRadio}"
                                                                           th:object="${ksDto}" method="put">-->
                                                                     <em>Статус гарантийного платежа</em>
-                                                                    <div th:switch="${ks.paymentStatus}">
-                                                                        <div th:case="false">
-                                                                            <label class="radiocheck">
-                                                                                <input th:type="radio" th:id="'payment_switcher_'+${ks.id}" th:name="'payment_switcher_'+${ks.id}" class="www" th:checked="'true'" th:value="'false'"/>
-                                                                                <strong>Не погашено</strong>
-                                                                            </label>
+                                                                    <!--<label class="radiocheck">
+                                                                       <input th:type="radio" th:id="'payment_switcher_add'" th:name="payment_switcher_add" class="www" th:checked="'true'" th:value="'false'"/>
+                                                                       <strong>Не погашено</strong>
+                                                                   </label>
 
-                                                                            <label class="radiocheck">
-                                                                                <input th:type="radio" th:id="'payment_switcher_'+${ks.id}" th:name="'payment_switcher_'+${ks.id}" class="www" th:checked="'false'" th:value="'true'"/>
-                                                                                <strong>Погашено</strong>
-                                                                            </label>
-                                                                        </div>
-                                                                        <div th:case="true">
-                                                                            <label class="radiocheck">
-                                                                                <input th:type="radio" th:id="'payment_switcher_'+${ks.id}" th:name="'payment_switcher_'+${ks.id}" class="www" th:checked="'false'" th:value="'false'"/>
-                                                                                <strong>Не погашено</strong>
-                                                                            </label>
-                                                                            <label class="radiocheck">
-                                                                                <input th:type="radio" th:id="'payment_switcher_'+${ks.id}" th:name="'payment_switcher_'+${ks.id}" class="www" th:checked="'true'" th:value="'true'"/>
-                                                                                <strong>Погашено</strong>
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
+                                                                   <label class="radiocheck">
+                                                                       <input th:type="radio" th:id="'payment_switcher_add'" th:name="payment_switcher_add" class="www" th:checked="'false'" th:value="'true'"/>
+                                                                       <strong>Погашено</strong>
+                                                                   </label>
+
+                                                                   <label class="radiocheck" th:switch="${ks.paymentStatus}">
+                                                                       <input th:type="radio" th:case="true" th:id="'payment_switcher_'+${ks.id}" th:name="'payment_switcher_'+${ks.id}" class="www" th:text="'true'"/>
+                                                                       <input th:type="radio" th:case="false" th:id="'payment_switcher_'+${ks.id}" th:name="'payment_switcher_'+${ks.id}" class="www" th:text="'false'"/>
+                                                                   </label>-->
+                                                                   <div th:switch="${ks.paymentStatus}">
+                                                                       <div th:case="false">
+                                                                           <label class="radiocheck">
+                                                                               <input th:type="radio" th:id="'payment_switcher_'+${ks.id}" th:name="'payment_switcher_'+${ks.id}" class="www" th:checked="'true'" th:value="'false'"/>
+                                                                               <strong>Не погашено</strong>
+                                                                           </label>
+                                                                       </div>
+                                                                       <div th:case="true">
+                                                                           <label class="radiocheck">
+                                                                               <input th:type="radio" th:id="'payment_switcher_'+${ks.id}" th:name="'payment_switcher_'+${ks.id}" class="www" th:checked="'true'" th:value="'true'"/>
+                                                                               <strong>Погашено</strong>
+                                                                           </label>
+                                                                       </div>
+                                                                   </div>
 
 
                                                                     <div class="clear_after" th:id ="'KS_id_'+*{id}" th:value="*{id}">

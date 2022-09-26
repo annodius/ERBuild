@@ -2,6 +2,8 @@ package ru.aora.erp.domain.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.aora.erp.domain.service.UsersetService;
+import ru.aora.erp.repository.gateway.DbUsersetGateway;
 import ru.aora.erp.repository.jpa.JpaContractRepository;
 import ru.aora.erp.repository.jpa.JpaCounteragentRepository;
 import ru.aora.erp.repository.jpa.JpaKsRepository;
@@ -11,6 +13,7 @@ import ru.aora.erp.domain.service.KsService;
 import ru.aora.erp.repository.gateway.DbContractGateway;
 import ru.aora.erp.repository.gateway.DbCounteragentGateway;
 import ru.aora.erp.repository.gateway.DbKsGateway;
+import ru.aora.erp.repository.jpa.JpaUsersetRepository;
 
 @Configuration
 public class GarantServiceConfig {
@@ -44,6 +47,13 @@ public class GarantServiceConfig {
     public CounteragentService counteragentService(DbCounteragentGateway gateway) {
         return new CounteragentService(gateway);
     }
+
+    @Bean
+    public DbUsersetGateway dbUsersetGateway(JpaUsersetRepository gateway) { return new DbUsersetGateway(gateway); }
+
+    @Bean
+    public UsersetService usersetService(DbUsersetGateway gateway) { return new UsersetService(gateway); }
+
 
 //    @Bean //todo: используем или нет???
 //    public CommonsRequestLoggingFilter logFilter() {

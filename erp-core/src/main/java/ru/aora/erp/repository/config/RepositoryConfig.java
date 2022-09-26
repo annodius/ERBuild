@@ -79,22 +79,15 @@ public class RepositoryConfig {
     @Bean(name = "postgres-db")
     public DataSource postgresDataSource() throws URISyntaxException {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        URI dbUri = new URI(System.getenv("DATABASE_URL"));
+        //URI dbUri = new URI(System.getenv("DATABASE_URL"));
 
-        dataSource.setUsername(dbUri.getUserInfo().split(":")[0]);
-        dataSource.setPassword(dbUri.getUserInfo().split(":")[1]);
-        dataSource.setUrl("jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?sslmode=require");
-        return dataSource;
-    }
+        //dataSource.setUsername(dbUri.getUserInfo().split(":")[0]);
+        //dataSource.setPassword(dbUri.getUserInfo().split(":")[1]);
+        //dataSource.setUrl("jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?sslmode=require");
 
-    @Bean(name = "postgres-db")
-    public DataSource postgresDataSource() throws URISyntaxException {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        URI dbUri = new URI(System.getenv("DATABASE_URL"));
-
-        dataSource.setUsername(dbUri.getUserInfo().split(":")[0]);
-        dataSource.setPassword(dbUri.getUserInfo().split(":")[1]);
-        dataSource.setUrl("jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?sslmode=require");
+        dataSource.setUsername("ggoktkxtomizma");
+        dataSource.setPassword("f5e9844085514ff9fa07c26533d9de7aa099ad9c54efa32078555932a426565f");
+        dataSource.setUrl("jdbc:postgresql://ec2-54-75-184-144.eu-west-1.compute.amazonaws.com:5432/dfnffn8bn8u0gi");
         return dataSource;
     }
 

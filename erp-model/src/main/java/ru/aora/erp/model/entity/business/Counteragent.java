@@ -1,4 +1,5 @@
 package ru.aora.erp.model.entity.business;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Counteragent {
@@ -12,6 +13,7 @@ public class Counteragent {
     private String phoneNumber;
     private String mail;
     private String address;
+    private BigDecimal inn;
     private LocalDateTime deactivationDate;
     private Integer activeStatus;
 
@@ -96,6 +98,15 @@ public class Counteragent {
         return this;
     }
 
+    public BigDecimal getInn() {
+        return inn;
+    }
+
+    public Counteragent setInn(BigDecimal inn) {
+        this.inn = inn;
+        return this;
+    }
+
     public LocalDateTime getDeactivationDate() {
         return deactivationDate;
     }
@@ -126,6 +137,7 @@ public class Counteragent {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", mail='" + mail + '\'' +
                 ", address='" + address + '\'' +
+                ", inn='" + inn + '\'' +
                 ", deactivationDate=" + deactivationDate +
                 ", deactivated=" + activeStatus +
                 '}';
