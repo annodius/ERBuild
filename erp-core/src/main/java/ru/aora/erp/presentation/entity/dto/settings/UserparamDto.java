@@ -5,9 +5,11 @@ import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.StringJoiner;
 
-public final class UsersetDto {
+public final class UserparamDto {
 
     private String id;
+
+    private String userId;
     private Integer userThemeColor;
     private Integer userThemePattern;
     @NotNull
@@ -18,8 +20,17 @@ public final class UsersetDto {
         return id;
     }
 
-    public UsersetDto setId(String id) {
+    public UserparamDto setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public UserparamDto setUserId(String userId) {
+        this.userId = userId;
         return this;
     }
 
@@ -27,7 +38,7 @@ public final class UsersetDto {
         return userThemeColor;
     }
 
-    public UsersetDto setUserThemeColor(Integer userThemeColor) {
+    public UserparamDto setUserThemeColor(Integer userThemeColor) {
         this.userThemeColor = userThemeColor;
         return this;
     }
@@ -36,7 +47,7 @@ public final class UsersetDto {
         return userThemePattern;
     }
 
-    public UsersetDto setUserThemePattern(Integer userThemePattern) {
+    public UserparamDto setUserThemePattern(Integer userThemePattern) {
         this.userThemePattern = userThemePattern;
         return this;
     }
@@ -45,17 +56,18 @@ public final class UsersetDto {
         return userThemeZoom;
     }
 
-    public UsersetDto setUserThemeZoom(BigDecimal userThemeZoom) {
+    public UserparamDto setUserThemeZoom(BigDecimal userThemeZoom) {
         this.userThemeZoom = userThemeZoom;
         return this;
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", UsersetDto.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", UserparamDto.class.getSimpleName() + "[", "]")
                 .add("id='" + id + "'")
+                .add("userId='" + userId + "'")
                 .add("userThemeColor='" + userThemeColor + "'")
-                .add("userThemePattern=" + userThemePattern)
+                .add("userThemePattern='" + userThemePattern + "'")
                 .add("userThemeZoom='" + userThemeZoom + "'")
                 .toString();
     }

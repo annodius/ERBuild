@@ -68,8 +68,10 @@ public final class KsContractCounteragentDtoUtils {
         return new KsContractCounteragentDto()
                 .setKsId(ks.getId())
                 .setGarantDate(ks.getGarantDate())
+                .setKsDate(ks.getKsDate())
                 .setKsNumber(ks.getKsNumber())
                 .setGarantSum(ks.getGarantSum())
+                .setKsSum(ks.getKsSum())
                 .setKsStatus(ks.getPaymentStatus())
                 .setContractId(ks.getContractId());
     }

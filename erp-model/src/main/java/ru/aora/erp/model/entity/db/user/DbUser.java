@@ -5,6 +5,7 @@ import ru.aora.erp.model.entity.db.Deactivatable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.StringJoiner;
@@ -52,6 +53,12 @@ public class DbUser implements Serializable, Deactivatable {
 
     @Column(name = "mail")
     private String mail;
+
+    @Column(name = "user_theme_pattern")
+    private Integer userThemePattern;
+
+    @Column(name = "user_theme_zoom")
+    private BigDecimal userThemeZoom;
 
     @Column(name = "employee_position")
     private String employeePosition;
@@ -182,6 +189,23 @@ public class DbUser implements Serializable, Deactivatable {
         return this;
     }
 
+    public Integer getUserThemePattern() {
+        return userThemePattern;
+    }
+
+    public DbUser setUserThemePattern(Integer userThemePattern) {
+        this.userThemePattern = userThemePattern;
+        return this;
+    }
+
+    public BigDecimal getUserThemeZoom() {
+        return userThemeZoom;
+    }
+
+    public DbUser setUserThemeZoom(BigDecimal userThemeZoom) {
+        this.userThemeZoom = userThemeZoom;
+        return this;
+    }
     public String getEmployeePosition() {
         return employeePosition;
     }
@@ -241,6 +265,8 @@ public class DbUser implements Serializable, Deactivatable {
                 .add("patronymic='" + patronymic + "'")
                 .add("phoneNumber='" + phoneNumber + "'")
                 .add("mail='" + mail + "'")
+                .add("userThemePattern='" + userThemePattern + "'")
+                .add("userThemeZoom='" + userThemeZoom + "'")
                 .add("employeePosition='" + employeePosition + "'")
                 .add("authorities=" + authorities)
                 .add("deactivationDate=" + deactivationDate)

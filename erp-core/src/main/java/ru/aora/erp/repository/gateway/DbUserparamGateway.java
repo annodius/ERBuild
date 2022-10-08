@@ -2,10 +2,10 @@ package ru.aora.erp.repository.gateway;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.aora.erp.domain.CrudGateway;
-import ru.aora.erp.model.entity.business.Userset;
-import ru.aora.erp.model.entity.db.DbUserset;
+import ru.aora.erp.model.entity.business.Userparam;
+import ru.aora.erp.model.entity.db.DbUserparam;
 import ru.aora.erp.model.entity.db.Deactivatable;
-import ru.aora.erp.model.entity.mapper.UsersetMapper;
+import ru.aora.erp.model.entity.mapper.UserparamMapper;
 import ru.aora.erp.utils.common.CommonUtils;
 
 import javax.transaction.Transactional;
@@ -19,66 +19,66 @@ import static ru.aora.erp.model.entity.db.Deactivatable.INACTIVE_ENTITY_FLAG;
 
 
 @Transactional
-public class DbUsersetGateway implements CrudGateway<Userset, String> {
+public class DbUserparamGateway implements CrudGateway<Userparam, String> {
 
-    private final JpaRepository<DbUserset, String> repository;
-    private final UsersetMapper mapper = UsersetMapper.INSTANCE;
+    private final JpaRepository<DbUserparam, String> repository;
+    private final UserparamMapper mapper = UserparamMapper.INSTANCE;
 
-    public DbUsersetGateway(JpaRepository<DbUserset, String> repository) {
+    public DbUserparamGateway(JpaRepository<DbUserparam, String> repository) {
         this.repository = repository;
     }
 
     @Override
-    public List<Userset> loadAllActive() {
+    public List<Userparam> loadAllActive() {
         return repository.findAll()
                 .stream()
                 .filter(Deactivatable::isActive)
-                .map(mapper::toUserset)
+                .map(mapper::toUserparam)
                 .collect(Collectors.toList());
     }
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public Optional<Userset> getById(String string) {
+    public Optional<Userparam> getById(String string) {
         return Optional.ofNullable(repository.getOne(string))
-                .map(mapper::toUserset)
+                .map(mapper::toUserparam)
                 .or(Optional::empty);
     }
 
     @Override
-    public Userset create(Userset userset) {
-        userset.setId(null);
-        DbUserset res = repository.save(mapper.toDbUserset(userset));
-        return mapper.toUserset(res);
+    public Userparam create(Userparam userparam) {
+        userparam.setId(null);
+        DbUserparam res = repository.save(mapper.toDbUserparam(userparam));
+        return mapper.toUserparam(res);
     }
 
     @Override
-    public Optional<Userset> update(Userset userset) {
-        Optional<DbUserset> optionalTarget = repository.findById(userset.getId())
+    public Optional<Userparam> update(Userparam userparam) {
+        Optional<DbUserparam> optionalTarget = repository.findById(userparam.getId())
                 .filter(Deactivatable::isActive)
                 .map(this::setDeactivated);
         if (optionalTarget.isPresent()) {
             repository.save(optionalTarget.get());
-            userset.setId(null);
-            DbUserset res = repository.save(mapper.toDbUserset(userset));
-            return Optional.ofNullable(mapper.toUserset(res));
+            userparam.setId(null);
+            DbUserparam res = repository.save(mapper.toDbUserparam(userparam));
+            return Optional.ofNullable(mapper.toUserparam(res));
         }
         return Optional.empty();
     }
 
     @Override
-    public Optional<Userset> delete(String id) {
+    public Optional<Userparam> delete(String id) {
         CommonUtils.requiredNotBlank(id);
         return repository.findById(id)
                 .filter(Deactivatable::isActive)
                 .map(this::setDeactivated)
                 .map(repository::save)
-                .map(mapper::toUserset)
+                .map(mapper::toUserparam)
                 .or(Optional::empty);
     }
 
-    private DbUserset setDeactivated(DbUserset userset) {
-        return Objects.requireNonNull(userset)
+    private DbUserparam setDeactivated(DbUserparam userparam) {
+        return Objects.requireNonNull(userparam)
                 .setActiveStatus(INACTIVE_ENTITY_FLAG)
                 .setDeactivationDate(LocalDateTime.now());
     }

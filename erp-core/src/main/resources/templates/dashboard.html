@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragment/header :: header"/>
+
+<head th:object="${userparamDto}"
+
+      th:replace="fragment/header :: header(user_pattern=${userparamDto.getUserparamDto().^[id=='2'].userThemePattern},user_color=${userparamDto.getUserparamDto().^[id=='2'].userThemeColor},user_scale=${userparamDto.getUserparamDto().^[id=='2'].userThemeZoom})"/>
+
 <body th:onload="getFragmentAndChangeDiv('#content','/garantresult')">
+
 <div th:replace="fragment/header :: preloader"/>
 <!-- Container start -->
 <div id="container" class="animate_300">
-    <!-- Container start -->
-    <div th:replace="fragment/topbar :: topbar"/>
+    <!-- Container start <td th:text="${usersetDto.getUsersetDto()}+' vot takoj'"></td>-->
+    <div th:replace="fragment/topbar :: topbar('2')"/>
     <div id="content" class="animate_300">
         <div class="shadow top animate_150"></div>
         <div class="shadow bot animate_150"></div>
+
     </div>
     <div th:replace="fragment/sidebar :: sidebar"/>
     <!-- Background start -->

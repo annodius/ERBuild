@@ -1,12 +1,13 @@
 package ru.aora.erp.model.entity.business;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Userset {
+public class Userparam {
 
     private String id;
+
+    private String userId;
     private Integer userThemeColor;
     private Integer userThemePattern;
     private BigDecimal userThemeZoom;
@@ -17,8 +18,17 @@ public class Userset {
         return id;
     }
 
-    public Userset setId(String id) {
+    public Userparam setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public Userparam setUserId(String userId) {
+        this.userId = userId;
         return this;
     }
 
@@ -26,7 +36,7 @@ public class Userset {
         return userThemeColor;
     }
 
-    public Userset setUserThemeColor(Integer userThemeColor) {
+    public Userparam setUserThemeColor(Integer userThemeColor) {
         this.userThemeColor = userThemeColor;
         return this;
     }
@@ -35,7 +45,7 @@ public class Userset {
         return userThemePattern;
     }
 
-    public Userset setUserThemePattern(Integer userThemePattern) {
+    public Userparam setUserThemePattern(Integer userThemePattern) {
         this.userThemePattern = userThemePattern;
         return this;
     }
@@ -44,7 +54,7 @@ public class Userset {
         return userThemeZoom;
     }
 
-    public Userset setUserThemeZoom(BigDecimal userThemeZoom) {
+    public Userparam setUserThemeZoom(BigDecimal userThemeZoom) {
         this.userThemeZoom = userThemeZoom;
         return this;
     }
@@ -53,7 +63,7 @@ public class Userset {
         return deactivationDate;
     }
 
-    public Userset setDeactivationDate(LocalDateTime deactivationDate) {
+    public Userparam setDeactivationDate(LocalDateTime deactivationDate) {
         this.deactivationDate = deactivationDate;
         return this;
     }
@@ -62,17 +72,18 @@ public class Userset {
         return activeStatus;
     }
 
-    public Userset setActiveStatus(Integer activeStatus) {
+    public Userparam setActiveStatus(Integer activeStatus) {
         this.activeStatus = activeStatus;
         return this;
     }
 
     @Override
     public String toString() {
-        return "Userset{" +
+        return "Userparam{" +
                 "id='" + id + '\'' +
+                "userId='" + userId + '\'' +
                 ", userThemeColor='" + userThemeColor + '\'' +
-                ", userThemePattern=" + userThemePattern +
+                ", userThemePattern='" + userThemePattern +'\'' +
                 ", userThemeZoom='" + userThemeZoom + '\'' +
                 ", deactivationDate=" + deactivationDate +
                 ", deactivated=" + activeStatus +

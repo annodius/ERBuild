@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragment/header :: header"/>
+<head th:replace="fragment/header :: header(user_pattern='0', user_color='1',user_scale='1')"/>
 <body>
 <div th:replace="fragment/header :: preloader" />
 <!-- Container start -->
@@ -15,8 +15,10 @@
 						<div class="col_xxs_12 col_xs_12 col_s_5 col_m_6 col_l_6">
 							<div class="block height_equal size_is">
 								<div class="wrap intro clr_w4">
-									<div class="logo">AORA ERP
-										<!--<img src="./src/main/resources/static/icons/logo.png" class="center">-->
+									<div class="container">
+										<img src="../icons/logo.png" width="235" height="120"/>
+										<!--<div class="logo">
+										<img src=url('../icons/1.png') >-->
 									</div>
 									
 									<div class="meta size_is hide_xs hide_xxs">

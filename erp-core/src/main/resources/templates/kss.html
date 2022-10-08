@@ -274,13 +274,21 @@
                                                                    <div th:switch="${ks.paymentStatus}">
                                                                        <div th:case="false">
                                                                            <label class="radiocheck">
-                                                                               <input th:type="radio" th:id="'payment_switcher_'+${ks.id}" th:name="'payment_switcher_'+${ks.id}" class="www" th:checked="'true'" th:value="'false'"/>
+                                                                               <input th:type="radio" th:id="'payment_switcher_edit_'+*{id}" th:name="'payment_switcher_edit_'" class="www" th:checked="'true'" th:value="'false'"/>
                                                                                <strong>Не погашено</strong>
+                                                                           </label>
+                                                                           <label class="radiocheck">
+                                                                               <input th:type="radio" th:id="'payment_switcher_edit'+*{id}" th:name="'payment_switcher_edit_'" class="www" th:checked="'false'" th:value="'true'"/>
+                                                                               <strong>Погашено</strong>
                                                                            </label>
                                                                        </div>
                                                                        <div th:case="true">
                                                                            <label class="radiocheck">
-                                                                               <input th:type="radio" th:id="'payment_switcher_'+${ks.id}" th:name="'payment_switcher_'+${ks.id}" class="www" th:checked="'true'" th:value="'true'"/>
+                                                                               <input th:type="radio" th:id="'payment_switcher_edit'+*{id}" th:name="'payment_switcher_edit_'" class="www" th:checked="'false'" th:value="'false'"/>
+                                                                               <strong>Не погашено</strong>
+                                                                           </label>
+                                                                           <label class="radiocheck">
+                                                                               <input th:type="radio" th:id="'payment_switcher_edit'+*{id}" th:name="'payment_switcher_edit_'" class="www" th:checked="'true'" th:value="'true'"/>
                                                                                <strong>Погашено</strong>
                                                                            </label>
                                                                        </div>

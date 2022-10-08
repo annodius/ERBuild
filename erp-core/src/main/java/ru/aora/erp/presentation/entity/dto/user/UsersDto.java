@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.StringJoiner;
 
 public final class UsersDto {
-    private List<User> users;
+    public List<User> users;
 
-    private UsersDto() {
+    public UsersDto() {
     }
 
-    private UsersDto(List<User> users) {
+    public UsersDto(List<User> users) {
         this.users = users;
     }
 

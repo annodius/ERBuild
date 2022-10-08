@@ -2,8 +2,8 @@ package ru.aora.erp.domain.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.aora.erp.domain.service.UsersetService;
-import ru.aora.erp.repository.gateway.DbUsersetGateway;
+import ru.aora.erp.domain.service.UserparamService;
+import ru.aora.erp.repository.gateway.DbUserparamGateway;
 import ru.aora.erp.repository.jpa.JpaContractRepository;
 import ru.aora.erp.repository.jpa.JpaCounteragentRepository;
 import ru.aora.erp.repository.jpa.JpaKsRepository;
@@ -13,7 +13,7 @@ import ru.aora.erp.domain.service.KsService;
 import ru.aora.erp.repository.gateway.DbContractGateway;
 import ru.aora.erp.repository.gateway.DbCounteragentGateway;
 import ru.aora.erp.repository.gateway.DbKsGateway;
-import ru.aora.erp.repository.jpa.JpaUsersetRepository;
+import ru.aora.erp.repository.jpa.JpaUserparamRepository;
 
 @Configuration
 public class GarantServiceConfig {
@@ -49,10 +49,10 @@ public class GarantServiceConfig {
     }
 
     @Bean
-    public DbUsersetGateway dbUsersetGateway(JpaUsersetRepository gateway) { return new DbUsersetGateway(gateway); }
+    public DbUserparamGateway dbUserparamGateway(JpaUserparamRepository gateway) { return new DbUserparamGateway(gateway); }
 
     @Bean
-    public UsersetService usersetService(DbUsersetGateway gateway) { return new UsersetService(gateway); }
+    public UserparamService userparamService(DbUserparamGateway gateway) { return new UserparamService(gateway); }
 
 
 //    @Bean //todo: используем или нет???

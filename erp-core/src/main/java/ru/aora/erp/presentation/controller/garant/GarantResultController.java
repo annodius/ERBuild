@@ -43,6 +43,7 @@ public final class GarantResultController {
 
         @Override
         public String toString() {
+
             return new StringJoiner(", ", GarantResultDto.class.getSimpleName() + "[", "]")
                     .add("notPaidKsTotalSum=" + notPaidKsTotalSum)
                     .add("ksTotalSum=" + ksTotalSum)
@@ -67,7 +68,12 @@ public final class GarantResultController {
                             ks.getGarantDate()
                     );
                 }
+
             }
+
+        }
+        if (garantResult.minDaysToGarantDate==Long.MAX_VALUE){
+            garantResult.minDaysToGarantDate=0;
         }
         return garantResult;
     }

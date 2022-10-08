@@ -237,6 +237,8 @@ function saveKSRequest(contract_id, counteragent_id, contract_name, counteragent
 }
 
 function updateKSRequest(KSId, contractId, counteragent_id, contract_name, counteragent_name) {
+
+var payment_var_name="payment_switcher_edit_"+KSId;
     var JSONKS = {
         id:
         KSId,
@@ -253,7 +255,57 @@ function updateKSRequest(KSId, contractId, counteragent_id, contract_name, count
         garantDate:
             $("#garant_date_".concat(KSId)).val(),
         paymentStatus:
-            $("#payment_switcher_".concat(KSId)).val(),
+
+        $('input[name=payment_switcher_edit_]:checked').val()
+            //$("input[name=" + payment_var_name + ]:checked').val()
+            //$('input[name=" +KSId+ "]:checked).val()
+            //$("input[name="+payment_var_name+"]:checked").val()
+            //$("input[name='payment_switcher_edit_" +KSId+ "']:checked).val()
+        //$("input[name=" +payment_var_name+ "]:checked").val()
+        //$("input[name='element12']")
+    //becomes:
+
+
+    };
+
+    $.ajax({
+        type: 'PUT',
+        url: '/ks',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(JSONKS),
+        async: true,
+        success: function (JSONKS) {
+            console.log("SUCCESS: ", JSONKS);
+            //alert('At ' + result.time
+            //    + ': ' + result.message);
+            getFragmentParamAndChangeDiv('#content','/ks',counteragent_id,contract_id,contract_name,counteragent_name,0)
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+
+        }
+    });
+}
+
+function updateKSGarantRequest(KSId, contractId, counteragent_id, contract_name, counteragent_name) {
+
+
+    var JSONKS = {
+        id:
+        KSId,
+        contractId:
+        contractId,
+        ksDate:
+            $("#ks_date_".concat(KSId)).val(),
+        ksNumber:
+            $("#ks_number_".concat(KSId)).val(),
+        ksSum:
+            $("#ks_sum_".concat(KSId)).val(),
+        garantSum:
+            $("#garant_sum_".concat(KSId)).val(),
+        garantDate:
+            $("#garant_date_".concat(KSId)).val(),
+        paymentStatus:
+            $('input[name=payment_switcher_garant_edit]:checked').val()
     };
 
     $.ajax({
@@ -357,20 +409,22 @@ function updateCounteragentRequest(counteragentId) {
         }
     });
 
-    function updateUsersetRequest() {
+    function updateUsersetRequest(user_id) {
         var JSONUserset = {
-            id: usersetId,
+            id: user_id,
+            userId: user_id,
             userThemeColor:
-                $("#user_theme_color_".concat(usersetId)).val(),
+                $("#user_theme_color_".concat(user_id)).val(),
             userThemePattern:
-                $("#user_theme_pattern_".concat(usersetId)).val(),
+                $("#user_theme_pattern_".concat(user_id)).val(),
             userThemeZoom:
-                $("#user_theme_zoom_".concat(usersetId)).val()
+                //$("#user_theme_zoom_".concat(user_id)).val()
+            '1'
         };
 
         $.ajax({
             type: 'PUT',
-            url: '/fragment/topbar',
+            url: '/dashboard',
             contentType: 'application/json; charset=utf-8',
             accessControlAllowOrigin:"http://localhost:8080",
             data: JSON.stringify(JSONUserset),
@@ -379,7 +433,7 @@ function updateCounteragentRequest(counteragentId) {
                 console.log("SUCCESS: ", JSONUserset);
                 //$(url).appendTo('#content');
 
-                getFragmentAndChangeDiv('#content','/counteragent');
+                //getFragmentAndChangeDiv('#content','/counteragent');
                 //$('#content').load('/counteragent');
                 //$('#content').addClass('popover_menu');
                 //$('#content').addClass('module_menu');

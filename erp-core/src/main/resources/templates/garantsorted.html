@@ -86,7 +86,18 @@
                                                     <a href="javascript:;"  th:text="'Дата возврата '+${ks.garantDate}"></a>
                                                     <a href="javascript:;" class="toggle_cb" th:data-toggle="'details_'+${ks.ksId}">Показать детали</a>
                                                 </div>
+                                                <a href="javascript:;" class="actions show_popover rds_full" th:data-popover="'actions_'+${ks.ksId}" data-popover-position="left">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </a>
 
+                                                <div class="hide_me">
+                                                    <div th:id="'actions_'+${ks.ksId}">
+                                                        <ul class="popover_menu">
+                                                            <li><a href="javascript:;"><i class="fas fa-paw"></i> <strong> <div th:text="'Справка КС-3 № '+${ks.ksNumber}"></div></strong></a></li>
+                                                            <li><a href="#" class="toggle_cb" th:data-toggle="'KS_garant_edit_'+${ks.ksId}"><i class="fas fa-user-edit"></i> Изменить</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                                 <!--<a href="javascript:;" class="bookmark rds_full">
                                                     <i class="far fa-bookmark"></i>
                                                 </a>
@@ -111,22 +122,91 @@
 
                                                     <span><strong th:text="'Номер контракта '+${ks.contractNumber}"></strong></span>
 
-                                                    <span><strong th:text="'КС № '+${ks.ksNumber}"></strong></span>
+                                                    <span><strong th:text="'Дата КС-3 '+${ks.ksDate}"/></span>
+
+                                                    <span><strong th:text="'Сумма закрытая по КС-3 '+${ks.ksSum}"/></span>
+
+                                                    <span><strong th:text="'КС № '+${ks.ksNumber}"/></span>
+
+                                                    <span><strong th:text="'Дата погашения гарантийного платежа '+${ks.garantDate}"/></span>
 
                                                     <span><strong th:text="'Дней до погашения: '+${ks.daysToGarantDate}"></strong></span>
 
-                                                    <label class="radiocheck">
+                                                    <span><strong>Статус гарантийного платежа: НЕ ПОГАШЕН</strong></span>
 
-                                                        <input th:type="radio" th:id="'payment_switcher_'+${ks.ksId}" th:name="'payment_switcher_'+${ks.ksId}" class="www" th:checked="'true'" th:value="'true'" th:onclick="updateKSRequest([[${ks.ksId}]],[[${ks.contractId}]])"/>
-                                                        <strong>Не погашено</strong>
-                                                    </label>
-
-                                                    <label class="radiocheck">
-                                                        <input th:type="radio" th:id="'payment_switcher_'+${ks.ksId}" th:name="'payment_switcher_'+${ks.ksId}" class="www" th:checked="'false'" th:value="'false'" th:onclick="updateKSRequest([[${ks.ksId}]],[[${ks.contractId}]])"/>
-                                                        <strong>Погашено</strong>
                                                     </label>
 
                                                 </div>
+
+                                                <!-- Edit KS start-->
+                                                <div th:class="'KS_garant_edit_'+${ks.ksId}+' edit hide_me'" th:object="${ks}">
+                                                    <div class="row no_gutter">
+                                                        <div class="col_xxs_12 col_xs_12 col_s_12 col_m_12 col_l_12">
+                                                            <a th:name="'KS_garant_edit_'+${ks.ksId}"></a>
+                                                            <div class="KS_edit">
+                                                                Изменение формы справки КС-3
+                                                                <span> <a th:text="*{ksNumber}"></a></span>
+                                                                <a href="javascript:;" class="toggle_cb"
+                                                                   th:data-toggle="'KS_garant_edit_'+${ks.ksId}"><i class="far fa-times-circle"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col_xxs_12 col_xs_12 col_s_12 col_m_6 col_l_6 push_m_3 push_l_3">
+
+                                                            <div class="edit_basic"
+                                                                 th:id ="'form_KS_garant_edit_'+${ks.ksId}"
+                                                                 action="#"
+                                                                 th:object="${ks}">
+                                                                <label class="fld filler">
+                                                                    <em>Дата справки КС-3</em>
+                                                                    <div class="sign"><i class="fas fa-user"></i></div>
+                                                                    <input type="date" class="inp"  th:id ="'ks_date_'+${ks.ksId}"  name="ks_date"  th:value="${ks.ksDate}" />
+                                                                </label>
+                                                                <label class="fld filler">
+                                                                    <em>Номер справки КС-3</em>
+                                                                    <div class="sign"><i class="fas fa-user"></i></div>
+                                                                    <input type="text" class="inp" th:id ="'ks_number_'+${ks.ksId}" name="ks_number" th:value="${ks.ksNumber}"/>
+                                                                </label>
+                                                                <label class="fld filler">
+                                                                    <em>Сумма по справке КС-3</em>
+                                                                    <div class="sign"><i class="fas fa-user"></i></div>
+                                                                    <input type="text" class="inp" th:id ="'ks_sum_'+${ks.ksId}" name="ks_sum" th:value="${ks.ksSum}"/>
+                                                                </label>
+                                                                <label class="fld filler">
+                                                                    <em>Сумма гарантийного платежа</em>
+                                                                    <div class="sign"><i class="fas fa-user"></i></div>
+                                                                    <input type="text" class="inp" th:id ="'garant_sum_'+${ks.ksId}" name="garant_sum" th:value="${ks.garantSum}"/>
+                                                                </label>
+                                                                <label class="fld filler">
+                                                                    <em>Дата возврата гарантийного платежа</em>
+                                                                    <div class="sign"><i class="fas fa-user"></i></div>
+                                                                    <input type="date" class="inp" th:id ="'garant_date_'+${ks.ksId}" name="garant_date" th:value="${ks.garantDate}"/>
+                                                                </label>
+
+                                                                <em>Статус гарантийного платежа</em>
+
+
+                                                                <label class="radiocheck">
+                                                                    <input th:type="radio" th:id="'payment_switcher_edit'+${ks.ksId}" th:name="'payment_switcher_edit_'" class="www" th:checked="'true'" th:value="'false'" />
+                                                                    <strong>Не погашено</strong>
+                                                                </label>
+                                                                <label class="radiocheck">
+                                                                    <input th:type="radio" th:id="'payment_switcher_edit'+${ks.ksId}" th:name="'payment_switcher_edit_'" class="www" th:checked="'false'" th:value="'true'" />
+                                                                    <strong>Погашено</strong>
+                                                                </label>
+
+
+
+                                                                <div class="clear_after" th:id ="'KS_id_'+${ks.ksId}" th:value="${ks.ksId}">
+                                                                    <button th:onclick="updateKSRequest([[${ks.ksId}]],[[${ks.contractId}]],[[${ks.conteragentId}]],[[${ks.contractNumber}]],[[${ks.conteragentName}]])" name="KS_garant_edit" value="KS_garant_edit" class="bttn bttn_submit bttn_40 right rds_5" th:data-toggle="'KS_garant_edit_'+${ks.ksId}">Сохранить</button>
+                                                                    <a href="javascript:;" th:onclick="getFragmentAndChangeDiv('#content','/garantsorted')" class="bttn bttn_40 right rds_5 toggle_cb" th:data-toggle="'KS_garant_edit_'+${ks.ksId}">Закрыть</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <!--Edit KS END-->
+
                                             </div>
 
 

@@ -8,8 +8,12 @@ public final class KsContractCounteragentDto {
 
     private String KsId;
     private LocalDate garantDate;
+
+    private LocalDate ksDate;
     private String ksNumber;
     private BigDecimal garantSum;
+
+    private BigDecimal ksSum;
     private Boolean ksStatus;
     private String contractId;
     private String contractNumber;
@@ -35,6 +39,15 @@ public final class KsContractCounteragentDto {
         return this;
     }
 
+    public LocalDate getKsDate() {
+        return ksDate;
+    }
+
+    public KsContractCounteragentDto setKsDate(LocalDate ksDate) {
+        this.ksDate = ksDate;
+        return this;
+    }
+
     public String getKsNumber() {
         return ksNumber;
     }
@@ -50,6 +63,15 @@ public final class KsContractCounteragentDto {
 
     public KsContractCounteragentDto setGarantSum(BigDecimal garantSum) {
         this.garantSum = garantSum;
+        return this;
+    }
+
+    public BigDecimal getKsSum() {
+        return ksSum;
+    }
+
+    public KsContractCounteragentDto setKsSum(BigDecimal ksSum) {
+        this.ksSum = ksSum;
         return this;
     }
 
@@ -112,8 +134,10 @@ public final class KsContractCounteragentDto {
         return new StringJoiner(", ", KsContractCounteragentDto.class.getSimpleName() + "[", "]")
                 .add("KsId='" + KsId + "'")
                 .add("garantDate='" + garantDate + "'")
+                .add("ksDate='" + ksDate + "'")
                 .add("ksNumber='" + ksNumber + "'")
                 .add("garantSum=" + garantSum)
+                .add("ksSum=" + ksSum)
                 .add("ksStatus='" + ksStatus + "'")
                 .add("contractId='" + contractId + "'")
                 .add("contractNumber='" + contractNumber + "'")
