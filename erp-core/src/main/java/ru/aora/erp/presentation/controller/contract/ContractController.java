@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ru.aora.erp.domain.service.CounteragentService;
 import ru.aora.erp.domain.service.KsService;
 import ru.aora.erp.model.entity.business.Contract;
+import ru.aora.erp.model.entity.business.Counteragent;
 import ru.aora.erp.model.entity.business.Ks;
 import ru.aora.erp.presentation.controller.counteragent.CounteragentController;
 import ru.aora.erp.presentation.controller.exception.DtoValidationException;
@@ -43,6 +44,8 @@ public final class ContractController {
     private static final String PARENT_NAME = "parent_name";
     private static final String COUNTERAGENT_NAME = "counteragent_name";
     private static final String TOTAL_RESULTS = "total_results";
+    private static String daOldeIdCounter="null";
+    private static String nouveauIdCounter="null";
     private final KsService ksService;
     private final ContractService contractService;
     private static String select_counteragent_id;
@@ -65,6 +68,7 @@ public final class ContractController {
         model.put(ID_PARENT, id_parent);
         model.put(COUNTERAGENT_NAME, counteragent_name);
         model.put(TOTAL_RESULTS, contractResult(ksService.loadAll(), contractService.loadAll()));
+        ContractChildrenFind(ksService.loadAll(),contractService.loadAll());
         return CONTROLLER_MAPPING;
     }
 
@@ -105,10 +109,31 @@ public final class ContractController {
         return contractResult;
     }
 
+    public void ContractChildrenFind(Collection<Ks>  kssList,Collection<Contract>  contractsList){
+        if (!"null".equals(daOldeIdCounter)) {
+            for (Contract contract : requireNonNull(contractsList)) {
+                if (contract != null && contract.getActiveStatus() == 0) {
+                    if ((contract.getOldId()).equals(daOldeIdCounter)) {
+                        nouveauIdCounter=contract.getId();
+                    }
+                }
+            }
+            for (Ks ks : requireNonNull(kssList)) {
+                if (ks != null && ks.getActiveStatus() == 0) {
+                    if (ks.getContractId().equals(daOldeIdCounter)) {
+                        ks.setContractId(nouveauIdCounter);
+                        ksService.update(ks);
+                    }
+                }
+            }
+            daOldeIdCounter="null";
+        }
+    }
 
     @PutMapping
     public @ResponseBody String putContract(@Valid @RequestBody ContractDto dto, BindingResult bindingResult) {
         DtoValidationException.throwIfHasErrors(bindingResult);
+        daOldeIdCounter= dto.getId();
         return  contractService.update(toContract(dto)).getMsg();
     }
 

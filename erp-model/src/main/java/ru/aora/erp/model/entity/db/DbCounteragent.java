@@ -1,5 +1,7 @@
 package ru.aora.erp.model.entity.db;
 
+import org.hibernate.annotations.ForeignKey;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -14,7 +16,11 @@ public class DbCounteragent implements Serializable,Deactivatable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition="uniqueidentifier")
-    private String id;
+    public String id;
+
+
+    @Column(name = "parent_id", columnDefinition="uniqueidentifier")
+    public String oldId;
 
     @Column(name = "counteragent_name")
     private String counteragentName;
@@ -62,6 +68,15 @@ public class DbCounteragent implements Serializable,Deactivatable {
 
     public DbCounteragent setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public String getOldId() {
+        return oldId;
+    }
+
+    public DbCounteragent setOldId(String oldId) {
+        this.oldId = oldId;
         return this;
     }
 
@@ -168,6 +183,7 @@ public class DbCounteragent implements Serializable,Deactivatable {
     public String toString() {
         return "DbCounteragent{" +
                 "id='" + id + '\'' +
+                ", oldId='" + oldId + '\'' +
                 ", counteragentName='" + counteragentName + '\'' +
                 ", groupName='" + groupName + '\'' +
                 ", directorFirstName='" + directorFirstName + '\'' +
@@ -181,6 +197,8 @@ public class DbCounteragent implements Serializable,Deactivatable {
                 ", deactivated=" + activeStatus +
                 '}';
     }
+
 }
+
 
 

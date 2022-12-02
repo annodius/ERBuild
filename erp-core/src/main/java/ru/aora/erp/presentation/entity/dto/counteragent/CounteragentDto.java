@@ -6,6 +6,7 @@ import java.util.StringJoiner;
 public final class CounteragentDto {
 
     private String id;
+    private String oldId;
     private String counteragentName;
     private String groupName;
     private String directorFirstName;
@@ -22,6 +23,15 @@ public final class CounteragentDto {
 
     public CounteragentDto setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public String getOldId() {
+        return oldId;
+    }
+
+    public CounteragentDto setOldId(String oldId) {
+        this.oldId = oldId;
         return this;
     }
 
@@ -109,6 +119,7 @@ public final class CounteragentDto {
     public String toString() {
         return new StringJoiner(", ", CounteragentDto.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
+                .add("oldId=" + oldId)
                 .add("counteragentName='" + counteragentName + "'")
                 .add("groupName='" + groupName + "'")
                 .add("directorFirstName='" + directorFirstName + "'")

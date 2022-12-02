@@ -17,6 +17,8 @@ public class DbContract implements Serializable,Deactivatable {
     @Column(name = "id", columnDefinition = "uniqueidentifier")
     private String id;
 
+    @Column(name = "parent_id", columnDefinition = "uniqueidentifier")
+    private String oldId;
     @Column(name = "id_counteragent")
     private String counteragentId;
 
@@ -56,7 +58,14 @@ public class DbContract implements Serializable,Deactivatable {
         this.id = id;
         return this;
     }
+    public String getOldId() {
+        return oldId;
+    }
 
+    public DbContract setOldId(String oldId) {
+        this.oldId = oldId;
+        return this;
+    }
     public String getCounteragentId() {
         return counteragentId;
     }
@@ -133,6 +142,7 @@ public class DbContract implements Serializable,Deactivatable {
     public String toString() {
         return "DbContract{" +
                 "id='" + id + '\'' +
+                ", oldId='" + oldId + '\'' +
                 ", counteragentId='" + counteragentId + '\'' +
                 ", contractType=" + contractType +
                 ", contractDate=" + contractDate +

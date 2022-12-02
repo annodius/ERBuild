@@ -11,6 +11,8 @@ import java.util.StringJoiner;
 public final class ContractDto {
 
     private String id;
+
+    private String oldId;
     private String counteragentId;
     private int contractType;
     private LocalDate contractDate;
@@ -26,6 +28,15 @@ public final class ContractDto {
 
     public ContractDto setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public String getOldId() {
+        return oldId;
+    }
+
+    public ContractDto setOldId(String oldId) {
+        this.oldId = oldId;
         return this;
     }
 
@@ -87,6 +98,7 @@ public final class ContractDto {
     public String toString() {
         return new StringJoiner(", ", ContractDto.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
+                .add("oldId=" + oldId)
                 .add("counteragentId=" + counteragentId)
                 .add("contractType='" + contractType + "'")
                 .add("contractDate='" + contractDate + "'")

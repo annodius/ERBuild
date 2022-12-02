@@ -3,15 +3,16 @@
 
 <head th:object="${userparamDto}"
 
-      th:replace="fragment/header :: header(user_pattern=${userparamDto.getUserparamDto().^[id=='2'].userThemePattern},user_color=${userparamDto.getUserparamDto().^[id=='2'].userThemeColor},user_scale=${userparamDto.getUserparamDto().^[id=='2'].userThemeZoom})"/>
+      th:replace="fragment/header :: header(user_pattern=${userparamDto.userparamPattern},user_color=${userparamDto.userparamColor},user_scale=${userparamDto.userparamZoom})"/>
 
+<!--th:replace="fragment/header :: header(user_pattern=${userparamDto .userThemePattern},user_color=${userparamDto.getUserparamDto().^[id==[id_userparam]].userThemeColor},user_scale=${userparamDto.getUserparamDto().^[id==[id_userparam]].userThemeZoom},id_number=${id_userparam})"/> -->
 <body th:onload="getFragmentAndChangeDiv('#content','/garantresult')">
 
 <div th:replace="fragment/header :: preloader"/>
 <!-- Container start -->
 <div id="container" class="animate_300">
-    <!-- Container start <td th:text="${usersetDto.getUsersetDto()}+' vot takoj'"></td>-->
-    <div th:replace="fragment/topbar :: topbar('2')"/>
+    <!-- Container start -->
+    <div th:replace="fragment/topbar :: topbar(user_id=${userparamDto.userID},userparam_id=${userparamDto.userparamID},user_zoom=${userparamDto.userparamZoom})"/>
     <div id="content" class="animate_300">
         <div class="shadow top animate_150"></div>
         <div class="shadow bot animate_150"></div>

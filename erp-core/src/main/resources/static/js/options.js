@@ -220,7 +220,9 @@ $(document).ready(function($) {
 		var zoom = $(this).val();
 		$('html').css('zoom', zoom);
 		$('#topbar .nav .quick_options .current_zoom').text(Math.round(zoom * 100) + '%');
+
 		$('#topbar .nav .quick_options button.bttn').prop('disabled', false);
+		//updateUsersetRequest();
 	});
 
 	$('#topbar .nav .quick_options .colors a').each(function() {
@@ -231,7 +233,9 @@ $(document).ready(function($) {
 
 			var theme = $(this).data('color');
 			$('#user_theme_color').attr('href', 'css/theme-color-' + theme + '.css');
+
 			$('#topbar .nav .quick_options button.bttn').prop('disabled', false);
+			//updateUsersetRequest();
 		});
 	});
 
@@ -251,8 +255,11 @@ $(document).ready(function($) {
 
 			var theme = $(this).data('pattern');
 			$('#user_theme_pattern').attr('href', 'css/theme-pattern-' + theme + '.css');
+
 			$('#topbar .nav .quick_options button.bttn').prop('disabled', false);
+			//updateUsersetRequest();
 		});
+
 	});
 
 	$('#topbar .nav .quick_options .no_pattern').click(function() {
@@ -299,11 +306,11 @@ $(document).ready(function($) {
 
 	// Log-off timer
 
-	$('.test_timer').startTimer({
-		onComplete: function(element) {
-			window.location.replace('login.php');
-		},
-	});
+	//$('.test_timer').startTimer({
+	//	onComplete: function(element) {
+	//		window.location.replace('login.php');
+	//	},
+	//});
 
 	loadOptions();
 

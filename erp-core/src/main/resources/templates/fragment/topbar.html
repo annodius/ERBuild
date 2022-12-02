@@ -1,5 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<div id="topbar" class="animate_150 clr_b2" th:fragment="topbar(user_id)">
+<div id="topbar" class="animate_150 clr_b2" th:fragment="topbar(user_id,userparam_id,user_zoom)">
 	<a href="javascript:;" class="toggle_sidebar button left"><i class="fas fa-bars"></i></a>
 	<a href="#" th:onclick="getFragmentAndChangeDiv('#content','/garantresult')" class="toggle_sidebar button size_is hide_xs hide_s hide_m hide_l left"><i class="fas fa-home"></i></a>
 	<a href="#" th:onclick="getFragmentAndChangeDiv('#content','/garantresult')" class="logo size_is hide_xxs left" id="top_logo">ГАРАНТИЙКА</a>
@@ -40,7 +40,7 @@
                          <span class="current_zoom meta right">100%</span>
                      </strong>
 
-                     <input type="range" min="0.8" max="1.4" step="0.1" value="1" class="inp_range" id="theme_zoom" />
+                     <input type="range" min="0.8" max="1.4" step="0.1" th:value="${user_zoom}" class="inp_range" th:name="'user_theme_zoom_'+${user_id}" id="theme_zoom" />
 
                      <hr />
 
@@ -61,23 +61,32 @@
 
 					<strong>
 						Паттерн
-						<a href="javascript:;" th:class="'no_pattern'+' meta right active'" th:id ="'user_theme_pattern_'+${user_id}" th:name="'user_theme_pattern'+${user_id}" th:value="'0'"><i class="fas fa-check"></i> Нет</a>
+						<a href="javascript:;" class="no_pattern meta right active" th:name="'user_theme_pattern'+${user_id}" th:value="'0'"><i class="fas fa-check"></i> Нет</a>
 					</strong>
 
-					<div th:class="'style patterns'+' clear_after'">
-						<a href="javascript:;" th:class="'pttrn_1'+' left rds_5'" th:data-pattern="'1'" th:id ="'user_theme_pattern_'+${user_id}" th:name="'user_theme_pattern_'+${user_id}" th:value="'1'"><i class="fas fa-check"></i></a>
-						<a href="javascript:;" th:class="'pttrn_2'+' left rds_5'" th:data-pattern="'2'" th:id ="'user_theme_pattern_'+${user_id}" th:name="'user_theme_pattern_'+${user_id}" th:value="'2'"><i class="fas fa-check"></i></a>
-						<a href="javascript:;" th:class="'pttrn_3'+' left rds_5'" th:data-pattern="'3'" th:id ="'user_theme_pattern_'+${user_id}" th:name="'user_theme_pattern_'+${user_id}" th:value="'3'"><i class="fas fa-check"></i></a>
-						<a href="javascript:;" th:class="'pttrn_4'+' left rds_5'" th:data-pattern="'4'" th:id ="'user_theme_pattern_'+${user_id}" th:name="'user_theme_pattern_'+${user_id}" th:value="'4'"><i class="fas fa-check"></i></a>
-						<a href="javascript:;" th:class="'pttrn_5'+' left rds_5'" th:data-pattern="'5'" th:id ="'user_theme_pattern_'+${user_id}" th:name="'user_theme_pattern_'+${user_id}" th:value="'5'"><i class="fas fa-check"></i></a>
+					<div class="style patterns clear_after">
+						<a href="javascript:;" class="pttrn_1 left rds_5" data-pattern="1" th:name="'user_theme_pattern_'+${user_id}" th:value="'1'"><i class="fas fa-check"></i></a>
+						<a href="javascript:;" class="pttrn_2 left rds_5" data-pattern="2" th:name="'user_theme_pattern_'+${user_id}" th:value="'2'"><i class="fas fa-check"></i></a>
+						<a href="javascript:;" class="pttrn_3 left rds_5" data-pattern="3" th:name="'user_theme_pattern_'+${user_id}" th:value="'3'"><i class="fas fa-check"></i></a>
+						<a href="javascript:;" class="pttrn_4 left rds_5" data-pattern="4" th:name="'user_theme_pattern_'+${user_id}" th:value="'4'"><i class="fas fa-check"></i></a>
+						<a href="javascript:;" class="pttrn_5 left rds_5" data-pattern="5" th:name="'user_theme_pattern_'+${user_id}" th:value="'5'"><i class="fas fa-check"></i></a>
 					</div>
 				</div>
 
 				<div class="clear_after">
 					<!--<a href="settings.php" class="bttn bttn_40 bttn_simple left" >Настройки</a>-->
 					<a href="#" class="bttn bttn_40 bttn_simple left" >Настройки</a>
-					<button th:onclick="updateUsersetRequest(${user_id})" th:name="'quick_options'" th:value="'quick_options'" class="bttn bttn_submit bttn_40 right" th:data-toggle="'quick_options'" disabled="true">Сохранить</button>
-					<!--<button type="submit" name="submit" class="bttn bttn_submit bttn_40 right" disabled="true">Сохранить</button>-->
+					<label class="radiocheck" href="#"
+						   th:onclick="updateUsersetRequest([[${userparam_id}]],[[${user_id}]])">
+						<a></a>
+
+						<strong th:text="'Сохранить'">
+						</strong>
+					</label>
+
+					<!--<button th:onclick="saveKSRequest([[${id_parent}]],[[${id_grand_parent}]],[[${contract_name}]],[[${counteragent_name}]])" name="addKS" value="addKS" class="bttn bttn_submit bttn_40 right rds_5" th:data-toggle="'addKS'" >Сохранить</button>
+
+					<button type="submit" name="submit" class="bttn bttn_submit bttn_40 right" disabled="true">Сохранить</button>-->
 
 					</div>
 

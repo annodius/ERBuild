@@ -16,6 +16,7 @@ public final class CounteragentDtoMapper {
                 .setDirectorSurname(counteragent.getDirectorSurname())
                 .setGroupName(counteragent.getGroupName())
                 .setId(counteragent.getId())
+                .setOldId(counteragent.getOldId())
                 .setMail(counteragent.getMail())
                 .setPhoneNumber(counteragent.getPhoneNumber())
                 .setInn(counteragent.getInn());
@@ -29,6 +30,7 @@ public final class CounteragentDtoMapper {
                 .setDirectorPatronymic(dto.getDirectorPatronymic())
                 .setDirectorSurname(dto.getDirectorSurname())
                 .setGroupName(dto.getGroupName())
+                .setOldId(dto.getOldId())
                 .setId(dto.getId())
                 .setMail(dto.getMail())
                 .setPhoneNumber(dto.getPhoneNumber())

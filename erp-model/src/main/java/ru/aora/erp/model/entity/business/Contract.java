@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public class Contract {
 
     private String id;
+    private String oldId;
     private String counteragentId;
     private int contractType;
     private LocalDate contractDate;
@@ -22,6 +23,14 @@ public class Contract {
 
     public Contract setId(String id) {
         this.id = id;
+        return this;
+    }
+    public String getOldId() {
+        return oldId;
+    }
+
+    public Contract setOldId(String oldId) {
+        this.oldId = oldId;
         return this;
     }
 
@@ -101,6 +110,7 @@ public class Contract {
     public String toString() {
         return "Contract{" +
                 "id='" + id + '\'' +
+                ", oldId='" + oldId + '\'' +
                 ", counteragentId='" + counteragentId + '\'' +
                 ", contractType=" + contractType +
                 ", contractDate=" + contractDate +

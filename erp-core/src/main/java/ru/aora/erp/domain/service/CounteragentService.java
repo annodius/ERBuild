@@ -2,9 +2,14 @@ package ru.aora.erp.domain.service;
 
 import ru.aora.erp.domain.CrudGateway;
 import ru.aora.erp.domain.model.MsgServiceResult;
+import ru.aora.erp.model.entity.business.Contract;
 import ru.aora.erp.model.entity.business.Counteragent;
+import ru.aora.erp.presentation.controller.counteragent.CounteragentController;
 
+import java.util.Collection;
 import java.util.List;
+
+import static ru.aora.erp.presentation.entity.dto.counteragent.CounteragentDtoMapper.toCounteragent;
 
 public class CounteragentService {
 

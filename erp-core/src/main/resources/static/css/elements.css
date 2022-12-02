@@ -322,7 +322,7 @@ label.switcher strong{
 
 label.radiocheck{
 	display:block;
-	height:40px;
+	min-height:40px;
 	cursor:pointer;
 	position: relative;
 	padding:5px 0 5px 30px;

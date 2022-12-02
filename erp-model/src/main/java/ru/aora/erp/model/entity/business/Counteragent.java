@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class Counteragent {
 
     private String id;
+    private String oldId;
     private String counteragentName;
     private String groupName;
     private String directorFirstName;
@@ -23,6 +24,12 @@ public class Counteragent {
 
     public Counteragent setId(String id) {
         this.id = id;
+        return this;
+    }
+    public String getOldId() {return oldId;}
+
+    public Counteragent setOldId(String oldId) {
+        this.oldId = oldId;
         return this;
     }
 
@@ -129,6 +136,7 @@ public class Counteragent {
     public String toString() {
         return "Counteragent{" +
                 "id='" + id + '\'' +
+                ", oldId='" + oldId + '\'' +
                 ", counteragentName='" + counteragentName + '\'' +
                 ", groupName='" + groupName + '\'' +
                 ", directorFirstName='" + directorFirstName + '\'' +

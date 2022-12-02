@@ -368,7 +368,7 @@ function updateCounteragentRequest(counteragentId) {
         id: counteragentId,
         counteragentName:
             $("#counteragent_name_".concat(counteragentId)).val(),
-        groupName:null,
+        groupName: null,
         //$("#group_name_".concat(counteragentId)).val(),
         inn:
             $("#inn_".concat(counteragentId)).val(),
@@ -390,14 +390,14 @@ function updateCounteragentRequest(counteragentId) {
         type: 'PUT',
         url: '/counteragent',
         contentType: 'application/json; charset=utf-8',
-        accessControlAllowOrigin:"http://localhost:8080",
+        accessControlAllowOrigin: "http://localhost:8080",
         data: JSON.stringify(JSONCounteragent),
         async: true,
         success: function (JSONCounteragent) {
             console.log("SUCCESS: ", JSONCounteragent);
             //$(url).appendTo('#content');
 
-            getFragmentAndChangeDiv('#content','/counteragent');
+            getFragmentAndChangeDiv('#content', '/counteragent');
             //$('#content').load('/counteragent');
             //$('#content').addClass('popover_menu');
             //$('#content').addClass('module_menu');
@@ -408,32 +408,51 @@ function updateCounteragentRequest(counteragentId) {
             alert(jqXHR.status + ' ' + jqXHR.responseText);
         }
     });
+}
 
-    function updateUsersetRequest(user_id) {
+    function updateUsersetRequest(userparam_id,user_id) {
+
+    //var colorset=$('<link>').attr('rel','stylesheet').attr('id','user_theme_color').attr('href');
+    //    var colorset=$("link[id='user_theme_color']").attr('href');
+    //    console.log(colorset);
+    //    var arrcolor=colorset.split('-');
+    //var color_theme=arrcolor.charAt[arrcolor.indexOf('color')+1];
+    //var color_theme=arrcolor[arrcolor.indexOf('color')+1];
+     //   var patternset=$("link[id='user_theme_pattern']").attr('href');
+     //   var arrpattern=patternset.split('-');
+     //   var pattern_theme=arrpattern.charAt[arrpattern.indexOf('pattern')+1];
+     //   var zoom_theme=$('<html>').attr('zoom');
+        //var zoom_theme;
+        //if((parseFloat($('<html>').attr('style').substring(5,9))) != null) {
+        //    zoom_theme  = ($('<html>').attr('style').substring(5, 9));
+        //}
+        //else{
+        //     zoom_theme=($('<html>').attr('style').substring(5,9));
+        //}
         var JSONUserset = {
-            id: user_id,
+            id: userparam_id,
             userId: user_id,
             userThemeColor:
-                $("#user_theme_color_".concat(user_id)).val(),
+                parseInt($("link[id='user_theme_color']").attr('href').substring(16,17)),
             userThemePattern:
-                $("#user_theme_pattern_".concat(user_id)).val(),
+            parseInt($("link[id='user_theme_pattern']").attr('href').substring(18,19)),
             userThemeZoom:
-                //$("#user_theme_zoom_".concat(user_id)).val()
-            '1'
+                $('#theme_zoom').val()
+            //parseFloat($('<html>').attr('style').substring(6,9))
         };
 
         $.ajax({
             type: 'PUT',
-            url: '/dashboard',
+            url: '/userparam',
             contentType: 'application/json; charset=utf-8',
-            accessControlAllowOrigin:"http://localhost:8080",
+            accessControlAllowOrigin: "http://localhost:8080",
             data: JSON.stringify(JSONUserset),
             async: true,
             success: function (JSONUserset) {
                 console.log("SUCCESS: ", JSONUserset);
                 //$(url).appendTo('#content');
 
-                //getFragmentAndChangeDiv('#content','/counteragent');
+                getFragmentAndChangeDiv('#content','/garantresult');
                 //$('#content').load('/counteragent');
                 //$('#content').addClass('popover_menu');
                 //$('#content').addClass('module_menu');
@@ -445,7 +464,7 @@ function updateCounteragentRequest(counteragentId) {
             }
         });
     }
-}
+
 
 function error_dialog(error_message) {
     var responseJSON = jQuery.parseJSON(error_message);

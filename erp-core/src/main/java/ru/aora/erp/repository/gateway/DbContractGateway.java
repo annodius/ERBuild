@@ -58,6 +58,7 @@ public class DbContractGateway implements CrudGateway<Contract, String> {
                 .map(this::setDeactivated);
         if (optionalTarget.isPresent()) {
             repository.save(optionalTarget.get());
+            contract.setOldId(contract.getId());
             contract.setId(null);
             DbContract res = repository.save(mapper.toDbContract(contract));
             return Optional.ofNullable(mapper.toContract(res));

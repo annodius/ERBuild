@@ -19,17 +19,14 @@ public class KsService {
         return gateway.loadAllActive();
     }
 
-    public MsgServiceResult update(Ks ks) {
-        Objects.requireNonNull(ks);
+    public MsgServiceResult update(Ks ks) {//Objects.requireNonNull(ks);
         return gateway.update(ks)
                 .map(c -> MsgServiceResult.success("Ks updated"))
                 .orElseGet(() -> MsgServiceResult.failed("Ks to update not found"));
     }
 
-    public Ks create(Ks ks) {
-        Objects.requireNonNull(ks);
-        return gateway.create(ks);
-    }
+    public Ks create(Ks ks) {Objects.requireNonNull(ks);
+        return gateway.create(ks);}
 
     public MsgServiceResult delete(String id) {
         CommonUtils.requiredNotBlank(id);
