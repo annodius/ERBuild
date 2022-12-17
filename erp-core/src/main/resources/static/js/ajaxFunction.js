@@ -89,6 +89,7 @@ function getFragmentParamAndChangeDiv(divId, reference, id_grand_parent, id_pare
 
 
 
+
 function RefreshDiv(divId, reference) {
     function refreshDiv()
     {
@@ -236,6 +237,38 @@ function saveKSRequest(contract_id, counteragent_id, contract_name, counteragent
     });
 }
 
+function saveXLSRequest(url,contract_id, counteragent_id, contract_name, counteragent_name) {
+    var JSONObject = {
+
+    };
+    $.ajax({
+        type: 'POST',
+        url: '/printcontract',
+        contentType: 'application/json',
+        data: JSON.stringify(JSONObject),
+        async: true,
+        success: function (JSONObject) {
+            console.log("SUCCESS: ", JSONObject);
+            //alert('At ' + result.time
+            //    + ': ' + result.message);
+            getFragmentParamAndChangeDiv('#content','/printcontract',counteragent_id,contract_id,contract_name,counteragent_name,0)
+            //$("#content").html(data);
+            //$("#content").replaceWith('/contract');
+            //$("#content").load('/counteragent');
+        },
+        error: function (response) {
+            change_and_run_error_popup(response);
+
+            //var responseJSON = jQuery.parseJSON(jqXHR.responseText);
+            //var errors=JSON.parse(responseJSON);
+            //var error_message=responseJSON.message();
+            //alert(jqXHR.status + ' ' + error_message);
+            //error_dialog(jqXHR.responseText);
+        }
+
+    });
+}
+
 function updateKSRequest(KSId, contractId, counteragent_id, contract_name, counteragent_name) {
 
 var payment_var_name="payment_switcher_edit_"+KSId;
@@ -278,7 +311,7 @@ var payment_var_name="payment_switcher_edit_"+KSId;
             console.log("SUCCESS: ", JSONKS);
             //alert('At ' + result.time
             //    + ': ' + result.message);
-            getFragmentParamAndChangeDiv('#content','/ks',counteragent_id,contract_id,contract_name,counteragent_name,0)
+            getFragmentParamAndChangeDiv('#content','/ks',counteragent_id,contractId,contract_name,counteragent_name,0)
         },
         error: function (jqXHR, textStatus, errorThrown) {
 
@@ -318,7 +351,7 @@ function updateKSGarantRequest(KSId, contractId, counteragent_id, contract_name,
             console.log("SUCCESS: ", JSONKS);
             //alert('At ' + result.time
             //    + ': ' + result.message);
-            getFragmentParamAndChangeDiv('#content','/ks',counteragent_id,contract_id,contract_name,counteragent_name,0)
+            getFragmentParamAndChangeDiv('#content','/ks',counteragent_id,contractId,contract_name,counteragent_name,0)
         },
         error: function (jqXHR, textStatus, errorThrown) {
 
@@ -326,10 +359,10 @@ function updateKSGarantRequest(KSId, contractId, counteragent_id, contract_name,
     });
 }
 
-function updateContractRequest(contractId, counteragentId, counteragentName) {
+function updateContractRequest(contractId, contractOldId, counteragentId, counteragentName) {
     var JSONContract = {
-        id:
-        contractId,
+        id: contractId,
+        oldId: contractOldId,
         counteragentId:
         counteragentId,
         contractType:
@@ -363,9 +396,10 @@ function updateContractRequest(contractId, counteragentId, counteragentName) {
     });
 }
 
-function updateCounteragentRequest(counteragentId) {
+function updateCounteragentRequest(counteragentId,counteragentOldId) {
     var JSONCounteragent = {
         id: counteragentId,
+        oldId: counteragentOldId,
         counteragentName:
             $("#counteragent_name_".concat(counteragentId)).val(),
         groupName: null,

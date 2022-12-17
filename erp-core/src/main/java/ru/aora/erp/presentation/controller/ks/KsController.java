@@ -2,15 +2,7 @@ package ru.aora.erp.presentation.controller.ks;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import ru.aora.erp.domain.service.ContractService;
 import ru.aora.erp.domain.service.CounteragentService;
 import ru.aora.erp.model.entity.business.Contract;
@@ -18,22 +10,26 @@ import ru.aora.erp.model.entity.business.Counteragent;
 import ru.aora.erp.model.entity.business.Ks;
 import ru.aora.erp.presentation.controller.contract.ContractController;
 import ru.aora.erp.presentation.controller.exception.DtoValidationException;
+import ru.aora.erp.presentation.controller.xlsout.ExcelGenerator;
 import ru.aora.erp.presentation.entity.dto.ks.KsDto;
 import ru.aora.erp.presentation.entity.dto.ks.KsDtoMapper;
 import ru.aora.erp.presentation.entity.dto.ks.KsListDto;
 import ru.aora.erp.domain.service.KsService;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Map;
 import java.util.StringJoiner;
 
 import static java.util.Objects.requireNonNull;
+import static ru.aora.erp.presentation.entity.dto.compose.KsContractCounteragentDtoUtils.sortByGarantDateNaturalOrder;
+import static ru.aora.erp.presentation.entity.dto.compose.KsContractCounteragentDtoUtils.toKsContractCounteragentDtoList;
 import static ru.aora.erp.presentation.entity.dto.ks.KsDtoMapper.toKs;
 
 @Controller
-@RequestMapping(KsUrl.MAPPING)
+@RequestMapping
 public final class KsController {
 
     private static final String CONTROLLER_MAPPING = "kss";
@@ -48,16 +44,18 @@ public final class KsController {
     private static final String TOTAL_RESULTS = "total_results";
     private final KsService ksService;
     private final ContractService contractService;
+    private final CounteragentService counteragentService;
     private static String counteragent_select_id;
     private static String contract_select_id;
 
-    public KsController(KsService ksService, ContractService contractService) {
+    public KsController(KsService ksService, ContractService contractService, CounteragentService counteragentService) {
         this.ksService = ksService;
         this.contractService = contractService;
+        this.counteragentService=counteragentService;
     }
 
     @SuppressWarnings("Duplicates")
-    @GetMapping
+    @RequestMapping(path = "/ks", method = RequestMethod.GET)
     public String ksForm(
             @RequestParam(ID_PAREN) String id_parent,
             @RequestParam(ID_GRAND_PARENT) String id_grand_parent,
@@ -70,6 +68,36 @@ public final class KsController {
         );
         counteragent_select_id=id_grand_parent;
         contract_select_id=id_parent;
+        model.put(DTO_MODEL, ksDto);
+        model.put(ID_PAREN, id_parent);
+        model.put(ID_GRAND_PARENT, id_grand_parent);
+        model.put(CONTRACT_NAME, contract_name);
+        model.put(COUNTERAGENT_NAME, counteragent_name);
+        model.put(TOTAL_RESULTS, ksResult(ksService.loadAll(),contractService.loadAll()));
+        return CONTROLLER_MAPPING;
+    }
+
+    @RequestMapping(path = "/printks", method = RequestMethod.GET)
+    public String ksPrintForm(
+            @RequestParam(ID_PAREN) String id_parent,
+            @RequestParam(ID_GRAND_PARENT) String id_grand_parent,
+            @RequestParam(PARENT_NAME) String contract_name,
+            @RequestParam(GRAND_PARENT_NAME) String counteragent_name,
+            Map<String, Object> model
+    ) throws IOException {
+        final KsListDto ksDto = KsListDto.of(
+                KsDtoMapper.toKsDtoList(ksService.loadAll())
+        );
+        counteragent_select_id=id_grand_parent;
+        contract_select_id=id_parent;
+
+        ExcelGenerator generator = new ExcelGenerator(contractService.loadAll(),ksService.loadAll(), sortByGarantDateNaturalOrder(
+                toKsContractCounteragentDtoList(
+                        ksService.loadAll(),
+                        contractService.loadAll(),
+                        counteragentService.loadAll())));
+        generator.generateKsExcelFile(counteragent_name,id_parent, contract_name);
+
         model.put(DTO_MODEL, ksDto);
         model.put(ID_PAREN, id_parent);
         model.put(ID_GRAND_PARENT, id_grand_parent);
@@ -118,20 +146,20 @@ public final class KsController {
         return ksResult;
     }
 
-    @PutMapping
+    @RequestMapping(path = "/ks", method = RequestMethod.PUT)
     public @ResponseBody String putKs(@Valid @RequestBody KsDto dto, BindingResult bindingResult) {
         DtoValidationException.throwIfHasErrors(bindingResult);
         return ksService.update(toKs(dto)).getMsg();
     }
 
-    @PostMapping
+    @RequestMapping(path = "/ks", method = RequestMethod.POST)
     public @ResponseBody String postKs(@Valid @RequestBody KsDto dto, BindingResult bindingResult) {
         DtoValidationException.throwIfHasErrors(bindingResult);
         ksService.create(toKs(dto));
         return "Ks was created";
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value="/ks/{id}")
     public @ResponseBody String deleteKs(@PathVariable String id) {
         return ksService.delete(id).getMsg();
     }

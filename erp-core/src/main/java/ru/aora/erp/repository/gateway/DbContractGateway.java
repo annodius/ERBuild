@@ -1,9 +1,11 @@
 package ru.aora.erp.repository.gateway;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.aora.erp.domain.CrudGateway;
 import ru.aora.erp.model.entity.business.Contract;
 import ru.aora.erp.model.entity.db.DbContract;
+import ru.aora.erp.model.entity.db.DbCounteragent;
 import ru.aora.erp.model.entity.db.Deactivatable;
 import ru.aora.erp.model.entity.mapper.ContractMapper;
 import ru.aora.erp.utils.common.CommonUtils;
@@ -47,6 +49,13 @@ public class DbContractGateway implements CrudGateway<Contract, String> {
     @Override
     public Contract create(Contract contract) {
         contract.setId(null);
+        List<DbContract> newContract;
+        newContract = repository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        if (newContract.get(0)!=null){
+            contract.setOldId(newContract.get(0).getId());}
+        else{
+            contract.setOldId("1");
+        }
         DbContract res = repository.save(mapper.toDbContract(contract));
         return mapper.toContract(res);
     }
@@ -58,7 +67,7 @@ public class DbContractGateway implements CrudGateway<Contract, String> {
                 .map(this::setDeactivated);
         if (optionalTarget.isPresent()) {
             repository.save(optionalTarget.get());
-            contract.setOldId(contract.getId());
+            contract.setOldId(contract.getOldId());
             contract.setId(null);
             DbContract res = repository.save(mapper.toDbContract(contract));
             return Optional.ofNullable(mapper.toContract(res));

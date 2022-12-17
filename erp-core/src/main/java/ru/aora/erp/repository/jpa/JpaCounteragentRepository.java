@@ -15,4 +15,7 @@ public interface JpaCounteragentRepository extends JpaRepository<DbCounteragent,
 
     @Query(value = "SELECT c FROM DbCounteragent c WHERE c.counteragentName = :name")
     Optional<DbCounteragent> findByName(String name);
+
+    //@Query(value = "SELECT max(d) FROM DbCounteragent d WHERE d.id = (select max(id) from DbCounteragent)")
+    //public String getMaxID();
 }
