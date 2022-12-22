@@ -26,6 +26,9 @@ public final class KsDto {
     @NotNull
     @Positive
     private BigDecimal garantSum;
+
+
+    private BigDecimal ksBaseValue;
     private Boolean paymentStatus;
     private Long daysToGarantDate;
 
@@ -92,6 +95,15 @@ public final class KsDto {
         return this;
     }
 
+    public BigDecimal getKSBaseValue() {
+        return ksBaseValue;
+    }
+
+    public KsDto setKSBaseValue(BigDecimal ksBaseValue) {
+        this.ksBaseValue = ksBaseValue;
+        return this;
+    }
+
     public Boolean getPaymentStatus() {
         return paymentStatus;
     }
@@ -120,6 +132,7 @@ public final class KsDto {
                 .add("ksSum=" + ksSum)
                 .add("garantDate=" + garantDate)
                 .add("garantSum=" + garantSum)
+                .add("ksBaseValue=" + ksBaseValue)
                 .add("paymentStatus=" + paymentStatus)
                 .add("daysToGarantDate=" + daysToGarantDate)
                 .toString();

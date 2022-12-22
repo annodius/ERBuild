@@ -18,6 +18,7 @@ public final class KsDtoMapper {
                 .setKsSum(ks.getKsSum())
                 .setGarantDate(ks.getGarantDate())
                 .setGarantSum(ks.getGarantSum())
+                .setKSBaseValue(ks.getKSBaseValue())
                 .setPaymentStatus(ks.getPaymentStatus())
                 .setDaysToGarantDate(toDaysToGarantDate(ks.getGarantDate()));
     }
@@ -31,6 +32,7 @@ public final class KsDtoMapper {
                 .setKsSum(ks.getKsSum())
                 .setGarantDate(ks.getGarantDate())
                 .setGarantSum(ks.getGarantSum())
+                .setKSBaseValue(ks.getKSBaseValue())
                 .setPaymentStatus(ks.getPaymentStatus());
     }
 

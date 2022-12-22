@@ -11,6 +11,8 @@ import ru.aora.erp.model.entity.business.Ks;
 import ru.aora.erp.presentation.controller.contract.ContractController;
 import ru.aora.erp.presentation.controller.exception.DtoValidationException;
 import ru.aora.erp.presentation.controller.xlsout.ExcelGenerator;
+import ru.aora.erp.presentation.entity.dto.contract.ContractDtoMapper;
+import ru.aora.erp.presentation.entity.dto.contract.ContractListDto;
 import ru.aora.erp.presentation.entity.dto.ks.KsDto;
 import ru.aora.erp.presentation.entity.dto.ks.KsDtoMapper;
 import ru.aora.erp.presentation.entity.dto.ks.KsListDto;
@@ -26,6 +28,8 @@ import java.util.StringJoiner;
 import static java.util.Objects.requireNonNull;
 import static ru.aora.erp.presentation.entity.dto.compose.KsContractCounteragentDtoUtils.sortByGarantDateNaturalOrder;
 import static ru.aora.erp.presentation.entity.dto.compose.KsContractCounteragentDtoUtils.toKsContractCounteragentDtoList;
+import static ru.aora.erp.presentation.entity.dto.contract.ContractDtoMapper.toContract;
+import static ru.aora.erp.presentation.entity.dto.contract.ContractDtoMapper.toListDto;
 import static ru.aora.erp.presentation.entity.dto.ks.KsDtoMapper.toKs;
 
 @Controller
@@ -45,6 +49,10 @@ public final class KsController {
     private final KsService ksService;
     private final ContractService contractService;
     private final CounteragentService counteragentService;
+
+    private static Counteragent selectCounteragent;
+    private static Contract selectContract;
+    private static BigDecimal oldKSSum;
     private static String counteragent_select_id;
     private static String contract_select_id;
 
@@ -63,9 +71,8 @@ public final class KsController {
             @RequestParam(GRAND_PARENT_NAME) String counteragent_name,
             Map<String, Object> model
     ) {
-        final KsListDto ksDto = KsListDto.of(
-                KsDtoMapper.toKsDtoList(ksService.loadAll())
-        );
+        final KsListDto ksDto = KsListDto.of(KsDtoMapper.toKsDtoList(ksService.loadAll()));
+
         counteragent_select_id=id_grand_parent;
         contract_select_id=id_parent;
         model.put(DTO_MODEL, ksDto);
@@ -73,7 +80,7 @@ public final class KsController {
         model.put(ID_GRAND_PARENT, id_grand_parent);
         model.put(CONTRACT_NAME, contract_name);
         model.put(COUNTERAGENT_NAME, counteragent_name);
-        model.put(TOTAL_RESULTS, ksResult(ksService.loadAll(),contractService.loadAll()));
+        model.put(TOTAL_RESULTS, ksResult(contractService.loadAll()));
         return CONTROLLER_MAPPING;
     }
 
@@ -103,7 +110,7 @@ public final class KsController {
         model.put(ID_GRAND_PARENT, id_grand_parent);
         model.put(CONTRACT_NAME, contract_name);
         model.put(COUNTERAGENT_NAME, counteragent_name);
-        model.put(TOTAL_RESULTS, ksResult(ksService.loadAll(),contractService.loadAll()));
+        model.put(TOTAL_RESULTS, ksResult(contractService.loadAll()));
         return CONTROLLER_MAPPING;
     }
 
@@ -121,24 +128,18 @@ public final class KsController {
         }
     }
 
-    private static KsResultDto ksResult(Collection<Ks> ksList,Collection<Contract> contractList) {
+    private static KsResultDto ksResult(Collection<Contract> contractList) {
         final KsResultDto ksResult = new KsResultDto();
+        ksResult.contractCurrentSum= BigDecimal.valueOf(0);
+        ksResult.ksContractSum= BigDecimal.valueOf(0);
         for (Contract contract : requireNonNull(contractList)) {
             if (contract!=null && contract.getActiveStatus() == 0) {
-                if (contract.getCounteragentId().equals(counteragent_select_id)) {
-                    if (contract.getContractSum() != null) {
-                        ksResult.contractCurrentSum = ksResult.contractCurrentSum.add(contract.getContractSum());
-
+                if (contract.getOldId().equals(contract_select_id)) {
+                    if (contract.getContractValue()!=null) {
+                        ksResult.contractCurrentSum = contract.getContractValue();
                     }
-                }
-            }
-        }
-
-        for (Ks ks : requireNonNull(ksList)) {
-            if (ks.getContractId().equals(contract_select_id)){
-                if (ks != null && ks.getActiveStatus() == 0) {
-                    if (ks.getKsSum() != null) {
-                        ksResult.ksContractSum = ksResult.ksContractSum.add(ks.getKsSum());
+                    if(contract.getKSValue()!=null) {
+                        ksResult.ksContractSum = contract.getKSValue();
                     }
                 }
             }
@@ -146,15 +147,91 @@ public final class KsController {
         return ksResult;
     }
 
+    private static void ksAddCycle (BigDecimal newKSSum, CounteragentService counteragentService, ContractService contractService, String counteragent_id, String contract_id) {
+        Collection<Counteragent> counteragentList=counteragentService.loadAll();
+        Collection<Contract> contractList=contractService.loadAll();
+
+        for (Counteragent counteragent : requireNonNull(counteragentList)){
+            if (counteragent.getOldId().equals(counteragent_id)){
+                if (counteragent!=null && counteragent.getActiveStatus() == 0) {
+                    selectCounteragent=counteragent;
+                    if (selectCounteragent.getKSSumValue()!=null) {
+                        selectCounteragent.setKSSumValue(selectCounteragent.getKSSumValue().add(newKSSum));
+                    }
+                    else{
+                        selectCounteragent.setKSSumValue(newKSSum);
+                    }
+                }
+            }
+        }
+        for (Contract contract : requireNonNull(contractList)){
+            if (contract.getOldId().equals(contract_id)){
+                if (contract!=null && contract.getActiveStatus() == 0) {
+                    selectContract=contract;
+                    if (selectContract.getKSValue()!=null) {
+                        selectContract.setKSValue(selectContract.getKSValue().add(newKSSum));
+                    }
+                    else{
+                        selectContract.setKSValue(newKSSum);
+                    }
+                }
+            }
+        }
+
+        counteragentService.update(selectCounteragent);
+        contractService.update(selectContract);
+
+    }
+    private static void ksEditCycle (BigDecimal newKSSum, CounteragentService counteragentService, ContractService contractService, KsService ksService,String counteragent_id, String contract_id, String ks_id) {
+        Collection<Counteragent> counteragentList=counteragentService.loadAll();
+        Collection<Contract> contractList=contractService.loadAll();
+        Collection<Ks> ksList=ksService.loadAll();
+
+        for (Ks ks : requireNonNull(ksList)) {
+            if (ks.getId().equals(ks_id)) {
+                if (ks != null && ks.getActiveStatus() == 0) {
+                    oldKSSum=ks.getKSBaseValue();
+                }
+            }
+        }
+        for (Contract contract : requireNonNull(contractList)){
+            if (contract.getOldId().equals(contract_id)){
+                if (contract!=null && contract.getActiveStatus() == 0) {
+                    selectContract=contract;
+                    selectContract.setKSValue(selectContract.getKSValue().add(newKSSum.add(oldKSSum.negate())));
+
+                }
+            }
+        }
+        for (Counteragent counteragent : requireNonNull(counteragentList)){
+            if (counteragent.getOldId().equals(counteragent_id)){
+                if (counteragent!=null && counteragent.getActiveStatus() == 0) {
+                    selectCounteragent=counteragent;
+                    selectCounteragent.setKSSumValue(selectCounteragent.getKSSumValue().add(newKSSum.add(oldKSSum.negate())));
+                }
+            }
+        }
+
+        counteragentService.update(selectCounteragent);
+        contractService.update(selectContract);
+
+    }
+
     @RequestMapping(path = "/ks", method = RequestMethod.PUT)
     public @ResponseBody String putKs(@Valid @RequestBody KsDto dto, BindingResult bindingResult) {
         DtoValidationException.throwIfHasErrors(bindingResult);
-        return ksService.update(toKs(dto)).getMsg();
+        ksEditCycle(dto.getKsSum(),counteragentService, contractService, ksService, counteragent_select_id, contract_select_id, dto.getId());
+        dto.setKSBaseValue(dto.getKsSum());
+        String Msg=ksService.update(toKs(dto)).getMsg();
+        return  Msg;
     }
+
 
     @RequestMapping(path = "/ks", method = RequestMethod.POST)
     public @ResponseBody String postKs(@Valid @RequestBody KsDto dto, BindingResult bindingResult) {
         DtoValidationException.throwIfHasErrors(bindingResult);
+        ksAddCycle(dto.getKsSum(),counteragentService, contractService,counteragent_select_id, contract_select_id);
+        dto.setKSBaseValue(dto.getKsSum());
         ksService.create(toKs(dto));
         return "Ks was created";
     }

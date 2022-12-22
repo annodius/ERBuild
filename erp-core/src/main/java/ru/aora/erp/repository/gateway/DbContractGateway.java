@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import ru.aora.erp.domain.CrudGateway;
 import ru.aora.erp.model.entity.business.Contract;
 import ru.aora.erp.model.entity.db.DbContract;
-import ru.aora.erp.model.entity.db.DbCounteragent;
 import ru.aora.erp.model.entity.db.Deactivatable;
 import ru.aora.erp.model.entity.mapper.ContractMapper;
 import ru.aora.erp.utils.common.CommonUtils;
@@ -51,7 +50,7 @@ public class DbContractGateway implements CrudGateway<Contract, String> {
         contract.setId(null);
         List<DbContract> newContract;
         newContract = repository.findAll(Sort.by(Sort.Direction.DESC, "id"));
-        if (newContract.get(0)!=null){
+        if (newContract != null && !newContract.isEmpty()) {
             contract.setOldId(newContract.get(0).getId());}
         else{
             contract.setOldId("1");

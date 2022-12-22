@@ -1,5 +1,6 @@
 package ru.aora.erp.presentation.entity.dto.contract;
 
+import ru.aora.erp.presentation.entity.dto.counteragent.CounteragentDto;
 import ru.aora.erp.presentation.entity.dto.ks.KsDto;
 
 import javax.validation.constraints.NotNull;
@@ -21,6 +22,8 @@ public final class ContractDto {
     @NotNull
     @Positive
     private BigDecimal contractSum;
+    private BigDecimal contractValue;
+    private BigDecimal ksValue;
 
     public String getId() {
         return id;
@@ -92,7 +95,21 @@ public final class ContractDto {
         this.contractSum = contractSum;
         return this;
     }
+    public BigDecimal getContractValue() {
+        return contractValue;
+    }
+    public ContractDto setContractValue(BigDecimal contractValue) {
+        this.contractValue = contractValue;
+        return this;
+    }
+    public BigDecimal getKSValue() {
+        return ksValue;
+    }
 
+    public ContractDto setKSValue(BigDecimal ksValue) {
+        this.ksValue = ksValue;
+        return this;
+    }
 
     @Override
     public String toString() {
@@ -105,6 +122,8 @@ public final class ContractDto {
                 .add("contractNumber='" + contractNumber + "'")
                 .add("contractSubject='" + contractSubject + "'")
                 .add("contractSum='" + contractSum + "'")
+                .add("contractValue='" + contractValue + "'")
+                .add("ksValue='" + ksValue + "'")
                 .toString();
     }
 }

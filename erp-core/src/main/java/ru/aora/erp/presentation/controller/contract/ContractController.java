@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.*;
 import ru.aora.erp.domain.service.CounteragentService;
 import ru.aora.erp.domain.service.KsService;
 import ru.aora.erp.model.entity.business.Contract;
+import ru.aora.erp.model.entity.business.Counteragent;
 import ru.aora.erp.model.entity.business.Ks;
 import ru.aora.erp.presentation.controller.exception.DtoValidationException;
 import ru.aora.erp.presentation.controller.xlsout.ExcelGenerator;
 import ru.aora.erp.presentation.entity.dto.contract.ContractDto;
 import ru.aora.erp.presentation.entity.dto.contract.ContractListDto;
 import ru.aora.erp.domain.service.ContractService;
+import ru.aora.erp.repository.gateway.SpecContractQuery;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -30,7 +32,8 @@ import static ru.aora.erp.presentation.entity.dto.contract.ContractDtoMapper.toL
 @Controller
 @RequestMapping
 public final class ContractController {
-
+    private static Counteragent selectCounteragent;
+    private static BigDecimal oldContractSum;
     private static final String CONTROLLER_MAPPING = "contracts";
     private static final String DTO_MODEL = "contractDto";
     private static String print_counteragent_id;
@@ -67,7 +70,7 @@ public final class ContractController {
         model.put(DTO_MODEL, contractDto);
         model.put(ID_PARENT, id_parent);
         model.put(COUNTERAGENT_NAME, counteragent_name);
-        model.put(TOTAL_RESULTS, contractResult(ksService.loadAll(), contractService.loadAll()));
+        model.put(TOTAL_RESULTS, contractResult(counteragentService.loadAll()));
         return CONTROLLER_MAPPING;
     }
     @RequestMapping(path = "/printercontract", method = RequestMethod.GET)
@@ -94,7 +97,7 @@ public final class ContractController {
         model.put(DTO_MODEL, contractDto);
         model.put(ID_PARENT, id_parent);
         model.put(COUNTERAGENT_NAME, counteragent_name);
-        model.put(TOTAL_RESULTS, contractResult(ksService.loadAll(), contractService.loadAll()));
+        model.put(TOTAL_RESULTS, contractResult(counteragentService.loadAll()));
         return CONTROLLER_MAPPING;
     }
 
@@ -112,22 +115,18 @@ public final class ContractController {
         }
     }
 
-    private static ContractResultDto contractResult(Collection<Ks> ksList, Collection<Contract> contractList) {
+    private static ContractResultDto contractResult(Collection<Counteragent> counteragentList) {
         final ContractResultDto contractResult = new ContractResultDto();
-        for (Contract contract : requireNonNull(contractList)){
-            if (contract.getCounteragentId().equals(select_counteragent_id)){
-                if (contract!=null && contract.getActiveStatus() == 0) {
-                    if (contract.getContractSum() != null) {
-                        contractResult.contractCounteragentTotalSum = contractResult.contractCounteragentTotalSum.add(contract.getContractSum());
-                        for (Ks ks : requireNonNull(ksList)) {
-                            if (ks.getContractId().equals(contract.getOldId())){
-                                if (ks != null && ks.getActiveStatus() == 0) {
-                                    if (ks.getKsSum() != null) {
-                                        contractResult.ksCounteragentTotalSum = contractResult.ksCounteragentTotalSum.add(ks.getKsSum());
-                                    }
-                                }
-                            }
-                        }
+        contractResult.ksCounteragentTotalSum= BigDecimal.valueOf(0);
+        contractResult.contractCounteragentTotalSum= BigDecimal.valueOf(0);
+        for (Counteragent counteragent : requireNonNull(counteragentList)){
+            if (counteragent.getOldId().equals(select_counteragent_id)){
+                if (counteragent!=null && counteragent.getActiveStatus() == 0) {
+                    if(counteragent.getContractSumValue()!=null) {
+                        contractResult.contractCounteragentTotalSum = counteragent.getContractSumValue();
+                    }
+                    if(counteragent.getKSSumValue()!=null) {
+                        contractResult.ksCounteragentTotalSum = counteragent.getKSSumValue();
                     }
                 }
             }
@@ -135,17 +134,62 @@ public final class ContractController {
         return contractResult;
     }
 
+    private static Counteragent contractAddCycle (BigDecimal newContractSum, Collection<Counteragent> counteragentList, String counteragent_id) {
+
+        for (Counteragent counteragent : requireNonNull(counteragentList)){
+            if (counteragent.getOldId().equals(counteragent_id)){
+                if (counteragent!=null && counteragent.getActiveStatus() == 0) {
+                    selectCounteragent=counteragent;
+                    if(selectCounteragent.getContractSumValue()!=null) {
+                        selectCounteragent.setContractSumValue(selectCounteragent.getContractSumValue().add(newContractSum));
+                    }
+                    else {
+                        selectCounteragent.setContractSumValue(newContractSum);
+                    }
+                }
+
+            }
+        }
+        return selectCounteragent;
+    }
+    private static Counteragent contractEditCycle (BigDecimal newContractSum, Collection<Counteragent> counteragentList, Collection<Contract> contractList,String counteragent_id, String contract_id) {
+
+        for (Contract contract : requireNonNull(contractList)) {
+            if (contract.getId().equals(contract_id)) {
+                if (contract != null && contract.getActiveStatus() == 0) {
+                    oldContractSum=contract.getContractValue();
+                }
+            }
+        }
+        for (Counteragent counteragent : requireNonNull(counteragentList)){
+            if (counteragent.getOldId().equals(counteragent_id)){
+                if (counteragent!=null && counteragent.getActiveStatus() == 0) {
+                    selectCounteragent=counteragent;
+                    selectCounteragent.setContractSumValue(selectCounteragent.getContractSumValue().add(newContractSum.add(oldContractSum.negate())));
+                }
+            }
+        }
+        return selectCounteragent;
+    }
 
 
     @RequestMapping(path = "/contract", method = RequestMethod.PUT)
     public @ResponseBody String putContract(@Valid @RequestBody ContractDto dto, BindingResult bindingResult) {
         DtoValidationException.throwIfHasErrors(bindingResult);
-        return  contractService.update(toContract(dto)).getMsg();
+        Counteragent counteragent=contractEditCycle(dto.getContractSum(),counteragentService.loadAll(), contractService.loadAll(),dto.getCounteragentId(), dto.getId());
+        counteragentService.update(counteragent);
+        dto.setContractValue(dto.getContractSum());
+
+        String Msg=contractService.update(toContract(dto)).getMsg();
+        return  Msg;
     }
 
     @RequestMapping(path = "/contract", method = RequestMethod.POST)
     public @ResponseBody String postContract(@Valid @RequestBody ContractDto dto, BindingResult bindingResult) {
         DtoValidationException.throwIfHasErrors(bindingResult);
+        Counteragent counteragent=contractAddCycle(dto.getContractSum(),counteragentService.loadAll(),toContract(dto).getCounteragentId());
+        counteragentService.update(counteragent);
+        dto.setContractValue(dto.getContractSum());
         contractService.create(toContract(dto));
         return "Contract was created";
     }

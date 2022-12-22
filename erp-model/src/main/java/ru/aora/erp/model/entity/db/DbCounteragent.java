@@ -49,6 +49,11 @@ public class DbCounteragent implements Serializable,Deactivatable {
     @Column(name = "inn")
     private BigDecimal inn;
 
+    @Column(name = "contract_value")
+    private BigDecimal contractSumValue;
+    @Column(name = "contract_ks")
+    private BigDecimal ksSumValue;
+
     @Column(name = "deactivation_date")
     private LocalDateTime deactivationDate;
 
@@ -161,6 +166,23 @@ public class DbCounteragent implements Serializable,Deactivatable {
         return this;
     }
 
+    public BigDecimal getContractSumValue() {
+        return contractSumValue;
+    }
+
+    public DbCounteragent setContractSumValue(BigDecimal contractSumValue) {
+        this.contractSumValue = contractSumValue;
+        return this;
+    }
+    public BigDecimal getKSSumValue() {
+        return ksSumValue;
+    }
+
+    public DbCounteragent setKSSumValue(BigDecimal ksSumValue) {
+        this.ksSumValue = ksSumValue;
+        return this;
+    }
+
     public LocalDateTime getDeactivationDate() {
         return deactivationDate;
     }
@@ -193,6 +215,8 @@ public class DbCounteragent implements Serializable,Deactivatable {
                 ", mail='" + mail + '\'' +
                 ", address='" + address + '\'' +
                 ", inn='" + inn + '\'' +
+                ", contractSumValue='" + contractSumValue + '\'' +
+                ", ksSumValue='" + ksSumValue + '\'' +
                 ", deactivationDate=" + deactivationDate +
                 ", deactivated=" + activeStatus +
                 '}';

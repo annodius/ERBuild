@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.aora.erp.domain.service.ContractService;
 import ru.aora.erp.domain.service.KsService;
 import ru.aora.erp.model.entity.business.Contract;
+import ru.aora.erp.model.entity.business.Counteragent;
 import ru.aora.erp.model.entity.business.Ks;
 import ru.aora.erp.presentation.controller.exception.DtoValidationException;
 import ru.aora.erp.presentation.entity.dto.counteragent.CounteragentDto;
@@ -46,7 +47,7 @@ public final class CounteragentController {
             Map<String, Object> model) {
         final CounteragentListDto listDto = CounteragentDtoMapper.toListDto(counteragentService.loadAll());
         model.put(CONTRACTOR_DTO_MODEL, listDto);
-        model.put(TOTAL_RESULTS, counteragentResult(ksService.loadAll(),contractService.loadAll()));
+        model.put(TOTAL_RESULTS, counteragentResult(counteragentService.loadAll()));
         return GARANT_MAPPING;
     }
 
@@ -64,22 +65,21 @@ public final class CounteragentController {
         }
     }
 
-    private static CounteragentResultDto counteragentResult(Collection<Ks> ksList,Collection<Contract> contractList) {
+    private static CounteragentResultDto counteragentResult(Collection<Counteragent> counteragentList) {
         final CounteragentResultDto counteragentResult = new CounteragentResultDto();
-        for (Contract contract : requireNonNull(contractList)) {
-            if (contract != null && contract.getActiveStatus() == 0) {
-                if (contract.getContractSum() != null) {
-                    counteragentResult.contractTotalCounteragentSum = counteragentResult.contractTotalCounteragentSum.add(contract.getContractSum());
-                }
+        counteragentResult.contractTotalCounteragentSum= BigDecimal.valueOf(0);
+        counteragentResult.ksTotalCounteragentSum= BigDecimal.valueOf(0);
+        for (Counteragent counteragent : requireNonNull(counteragentList)) {
+            if (counteragent != null && counteragent.getActiveStatus() == 0) {
+                    if(counteragent.getContractSumValue()!=null) {
+                        counteragentResult.contractTotalCounteragentSum = counteragentResult.contractTotalCounteragentSum.add(counteragent.getContractSumValue());
+                    }
+                    if (counteragent.getKSSumValue()!=null) {
+                        counteragentResult.ksTotalCounteragentSum = counteragentResult.ksTotalCounteragentSum.add(counteragent.getKSSumValue());
+                    }
             }
         }
-        for (Ks ks : requireNonNull(ksList)) {
-            if (ks != null && ks.getActiveStatus() == 0) {
-                if (ks.getKsSum() != null) {
-                    counteragentResult.ksTotalCounteragentSum = counteragentResult.ksTotalCounteragentSum.add(ks.getKsSum());
-                }
-            }
-        }
+
         return counteragentResult;
     }
 

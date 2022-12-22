@@ -16,7 +16,9 @@ public final class ContractDtoMapper {
                 .setContractType(contract.getContractType())
                 .setCounteragentId(contract.getCounteragentId())
                 .setOldId(contract.getOldId())
-                .setId(contract.getId());
+                .setId(contract.getId())
+                .setContractValue(contract.getContractValue())
+                .setKSValue(contract.getKSValue());
     }
 
     public static Contract toContract(ContractDto dto) {
@@ -28,7 +30,9 @@ public final class ContractDtoMapper {
                 .setContractType(dto.getContractType())
                 .setCounteragentId(dto.getCounteragentId())
                 .setOldId(dto.getOldId())
-                .setId(dto.getId());
+                .setId(dto.getId())
+                .setContractValue(dto.getContractValue())
+                .setKSValue(dto.getKSValue());
     }
 
     public static ContractListDto toListDto(List<Contract> contracts) {

@@ -39,7 +39,7 @@
 
                     <ul class="module_menu">
                         <form method="get">
-                            <li>
+                            <!--<li>
                                 <div class="name">С отмеченными:</div>
                             </li>
 
@@ -57,10 +57,11 @@
                                     <option>Прораб</option>
                                     <option>Очень длинная роль</option>
                                 </select>
-                            </li>
+                            </li>-->
 
                             <li>
-                                <button type="submit" class="button">Применить</button>
+                                <!--<button type="submit" class="button">Применить</button>-->
+                                <a href="#" class="toggle_cb" th:onclick="getFragmentAndChangeDiv('#content','/user')" >Применить</a>
                             </li>
 
                             <li>
@@ -143,7 +144,7 @@
                                     <a th:name="'user_edit_'+*{id}"></a>
                                     <div class="edit_user">
                                         Изменение пользователя
-                                        <span>Mignon Dempsey</span>
+                                        <span th:text="*{username}"></span>
                                         <a href="javascript:;" class="toggle_cb"
                                            th:data-toggle="'user_edit_'+*{id}"><i class="far fa-times-circle"></i></a>
                                     </div>

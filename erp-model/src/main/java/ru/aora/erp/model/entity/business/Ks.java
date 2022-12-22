@@ -13,6 +13,8 @@ public class Ks {
     private BigDecimal ksSum;
     private LocalDate garantDate;
     private BigDecimal garantSum;
+
+    private BigDecimal ksBaseValue;
     private Boolean paymentStatus;
     private LocalDateTime deactivationDate;
     private Integer activeStatus;
@@ -80,6 +82,15 @@ public class Ks {
         return this;
     }
 
+    public BigDecimal getKSBaseValue() {
+        return ksBaseValue;
+    }
+
+    public Ks setKSBaseValue(BigDecimal ksBaseValue) {
+        this.ksBaseValue = ksBaseValue;
+        return this;
+    }
+
     public Boolean getPaymentStatus() {
         return paymentStatus;
     }
@@ -117,6 +128,7 @@ public class Ks {
                 ", ksSum=" + ksSum +
                 ", garantDate=" + garantDate +
                 ", garantSum=" + garantSum +
+                ", ksBaseValue=" + ksBaseValue +
                 ", paymentStatus=" + paymentStatus +
                 ", deactivationDate=" + deactivationDate +
                 ", deactivated=" + activeStatus +

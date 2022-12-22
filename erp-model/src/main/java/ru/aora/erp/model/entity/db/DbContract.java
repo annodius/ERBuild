@@ -37,6 +37,11 @@ public class DbContract implements Serializable,Deactivatable {
     @Column(name = "contract_sum")
     private BigDecimal contractSum;
 
+    @Column(name = "contract_value")
+    private BigDecimal contractValue;
+    @Column(name = "contract_ks")
+    private BigDecimal ksValue;
+
     @Column(name = "deactivation_date")
     private LocalDateTime deactivationDate;
 
@@ -120,6 +125,22 @@ public class DbContract implements Serializable,Deactivatable {
         return this;
     }
 
+    public BigDecimal getContractValue() {
+        return contractValue;
+    }
+
+    public DbContract setContractValue(BigDecimal contractValue) {
+        this.contractValue = contractValue;
+        return this;
+    }
+    public BigDecimal getKSValue() {
+        return ksValue;
+    }
+
+    public DbContract setKSValue(BigDecimal ksValue) {
+        this.ksValue = ksValue;
+        return this;
+    }
     public LocalDateTime getDeactivationDate() {
         return deactivationDate;
     }
@@ -149,6 +170,8 @@ public class DbContract implements Serializable,Deactivatable {
                 ", contractNumber='" + contractNumber + '\'' +
                 ", contractSubject='" + contractSubject + '\'' +
                 ", contractSum='" + contractSum + '\'' +
+                ", contractValue='" + contractValue + '\'' +
+                ", ksValue='" + ksValue + '\'' +
                 ", deactivationDate=" + deactivationDate +
                 ", deactivated=" + activeStatus +
                 '}';

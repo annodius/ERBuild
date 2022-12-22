@@ -14,6 +14,8 @@ public class Contract {
     private String contractNumber;
     private String contractSubject;
     private BigDecimal contractSum;
+    private BigDecimal contractValue;
+    private BigDecimal ksValue;
     private LocalDateTime deactivationDate;
     private Integer activeStatus;
 
@@ -87,7 +89,22 @@ public class Contract {
         this.contractSum = contractSum;
         return this;
     }
+    public BigDecimal getContractValue() {
+        return contractValue;
+    }
 
+    public Contract setContractValue(BigDecimal contractValue) {
+        this.contractValue = contractValue;
+        return this;
+    }
+    public BigDecimal getKSValue() {
+        return ksValue;
+    }
+
+    public Contract setKSValue(BigDecimal ksValue) {
+        this.ksValue = ksValue;
+        return this;
+    }
     public LocalDateTime getDeactivationDate() {
         return deactivationDate;
     }
@@ -116,6 +133,9 @@ public class Contract {
                 ", contractDate=" + contractDate +
                 ", contractNumber='" + contractNumber + '\'' +
                 ", contractSubject='" + contractSubject + '\'' +
+                ", contractSum'" + contractSum + '\'' +
+                ", contractValue'" + contractValue + '\'' +
+                ", ksValue'" + ksValue + '\'' +
                 ", deactivationDate=" + deactivationDate +
                 ", deactivated=" + activeStatus +
                 '}';

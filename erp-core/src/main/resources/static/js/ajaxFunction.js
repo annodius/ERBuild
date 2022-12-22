@@ -374,7 +374,8 @@ function updateContractRequest(contractId, contractOldId, counteragentId, counte
         contractSubject:
             $("#contract_subject_".concat(contractId)).val(),
         contractSum:
-            $("#contract_sum_".concat(contractId)).val()
+            $("#contract_sum_".concat(contractId)).val(),
+
     };
 
     $.ajax({

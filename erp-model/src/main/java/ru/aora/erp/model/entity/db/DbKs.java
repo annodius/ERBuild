@@ -35,6 +35,8 @@ public class DbKs implements Serializable, Deactivatable {
     @Column(name = "garant_sum")
     private BigDecimal garantSum;
 
+    @Column(name = "contract_ks")
+    private BigDecimal ksBaseValue;
     @Column(name = "payment_status")
     private Boolean paymentStatus;
 
@@ -114,6 +116,15 @@ public class DbKs implements Serializable, Deactivatable {
         return this;
     }
 
+    public BigDecimal getKSBaseValue() {
+        return ksBaseValue;
+    }
+
+    public DbKs setKSBaseValue(BigDecimal ksBaseValue) {
+        this.ksBaseValue = ksBaseValue;
+        return this;
+    }
+
     public Boolean getPaymentStatus() {
         return paymentStatus;
     }
@@ -151,6 +162,7 @@ public class DbKs implements Serializable, Deactivatable {
                 ", ksSum=" + ksSum +
                 ", garantDate=" + garantDate +
                 ", garantSum=" + garantSum +
+                ", ksBaseValue=" + ksBaseValue +
                 ", paymentStatus=" + paymentStatus +
                 ", deactivationDate=" + deactivationDate +
                 ", deactivated=" + activeStatus +

@@ -25,8 +25,8 @@ public final class KsContractCounteragentDtoUtils {
     ));
 
     public static List<KsContractCounteragentDto> toKsContractCounteragentDtoList(List<Ks> ksList, List<Contract> contracts, List<Counteragent> counteragents) {
-        final Map<String, Contract> contractById = hashMapByBusinessKey(contracts, Contract::getId);
-        final Map<String, Counteragent> counteragentById = hashMapByBusinessKey(counteragents, Counteragent::getId);
+        final Map<String, Contract> contractById = hashMapByBusinessKey(contracts, Contract::getOldId);
+        final Map<String, Counteragent> counteragentById = hashMapByBusinessKey(counteragents, Counteragent::getOldId);
         final List<KsContractCounteragentDto> resultList = new ArrayList<>(ksList.size());
         if (CollectionUtils.isNotEmpty(ksList)) {
             for (Ks ks : ksList) {

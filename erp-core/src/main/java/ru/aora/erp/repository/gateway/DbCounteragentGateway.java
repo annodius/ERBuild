@@ -53,9 +53,10 @@ public class DbCounteragentGateway implements CrudGateway<Counteragent, String> 
         counteragent.setId(null);
         List<DbCounteragent> newCounteragent;
         newCounteragent = repository.findAll(Sort.by(Sort.Direction.DESC, "id"));
-        if (newCounteragent.get(0)!=null) {
-            counteragent.setOldId(newCounteragent.get(0).getId());
+        if (newCounteragent != null && !newCounteragent.isEmpty()) {
+                counteragent.setOldId(newCounteragent.get(0).getId());
         }
+
         else{
             counteragent.setOldId("1");
         }

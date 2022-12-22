@@ -15,6 +15,8 @@ public class Counteragent {
     private String mail;
     private String address;
     private BigDecimal inn;
+    private BigDecimal contractSumValue;
+    private BigDecimal ksSumValue;
     private LocalDateTime deactivationDate;
     private Integer activeStatus;
 
@@ -114,6 +116,22 @@ public class Counteragent {
         return this;
     }
 
+    public BigDecimal getContractSumValue() {
+        return contractSumValue;
+    }
+
+    public Counteragent setContractSumValue(BigDecimal contractSumValue) {
+        this.contractSumValue = contractSumValue;
+        return this;
+    }
+    public BigDecimal getKSSumValue() {
+        return ksSumValue;
+    }
+
+    public Counteragent setKSSumValue(BigDecimal ksSumValue) {
+        this.ksSumValue = ksSumValue;
+        return this;
+    }
     public LocalDateTime getDeactivationDate() {
         return deactivationDate;
     }
@@ -146,6 +164,8 @@ public class Counteragent {
                 ", mail='" + mail + '\'' +
                 ", address='" + address + '\'' +
                 ", inn='" + inn + '\'' +
+                ", contractSumValue'" + contractSumValue + '\'' +
+                ", ksSumValue'" + ksSumValue + '\'' +
                 ", deactivationDate=" + deactivationDate +
                 ", deactivated=" + activeStatus +
                 '}';

@@ -16,6 +16,8 @@ public final class CounteragentDto {
     private String mail;
     private String address;
     private BigDecimal inn;
+    private BigDecimal contractSumValue;
+    private BigDecimal ksSumValue;
 
     public String getId() {
         return id;
@@ -115,6 +117,23 @@ public final class CounteragentDto {
         return this;
     }
 
+    public BigDecimal getContractSumValue() {
+        return contractSumValue;
+    }
+
+    public CounteragentDto setContractSumValue(BigDecimal contractSumValue) {
+        this.contractSumValue = contractSumValue;
+        return this;
+    }
+    public BigDecimal getKSSumValue() {
+        return ksSumValue;
+    }
+
+    public CounteragentDto setKSSumValue(BigDecimal ksSumValue) {
+        this.ksSumValue = ksSumValue;
+        return this;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ", CounteragentDto.class.getSimpleName() + "[", "]")
@@ -129,6 +148,8 @@ public final class CounteragentDto {
                 .add("mail='" + mail + "'")
                 .add("address='" + address + "'")
                 .add("inn='" + inn + "'")
+                .add("contractSumValue='" + contractSumValue + "'")
+                .add("ksSumValue='" + ksSumValue + "'")
                 .toString();
     }
 }
