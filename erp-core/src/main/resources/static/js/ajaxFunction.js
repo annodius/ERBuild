@@ -444,8 +444,46 @@ function updateCounteragentRequest(counteragentId,counteragentOldId) {
         }
     });
 }
+function handleUserSettings(userparam_id, user_id, themecol, themepat, zoomnumb) {
+    // If userparam_id is empty or undefined, treat as a new user
+    if (!userparam_id || userparam_id.trim() === '') {
+        saveUsersetRequest(user_id, themecol, themepat, zoomnumb);
+    } else {
+        updateUsersetRequest(userparam_id, user_id, themecol, themepat, zoomnumb);
+    }
+}
+function saveUsersetRequest(user_id, themecol, themepat, zoom) {
+    // Set default values for theme color, theme pattern, and zoom if not provided
+    var defaultThemeColor = 1;
+    var defaultThemePattern = 1;
+    var defaultZoom = 1;
 
-    function updateUsersetRequest(userparam_id,user_id) {
+    var JSONObject = {
+        id: 0,
+        userId: user_id,
+        userThemeColor: themecol ? parseInt(themecol) : defaultThemeColor,
+        userThemePattern: themepat ? parseInt(themepat) : defaultThemePattern,
+        userThemeZoom: zoom ? parseFloat(zoom) : defaultZoom,
+    };
+
+
+    $.ajax({
+        type: 'POST',
+        url: '/userparam',
+        contentType: 'application/json',
+        data: JSON.stringify(JSONObject),
+        async: true,
+        success: function (JSONObject) {
+            console.log("SUCCESS: ", JSONObject);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(jqXHR.status + ' ' + jqXHR.responseText);
+        }
+
+    });
+}
+
+    function updateUsersetRequest(userparam_id,user_id,themc,themp,zoomn) {
 
     //var colorset=$('<link>').attr('rel','stylesheet').attr('id','user_theme_color').attr('href');
     //    var colorset=$("link[id='user_theme_color']").attr('href');
@@ -468,11 +506,11 @@ function updateCounteragentRequest(counteragentId,counteragentOldId) {
             id: userparam_id,
             userId: user_id,
             userThemeColor:
-                parseInt($("link[id='user_theme_color']").attr('href').substring(16,17)),
+            parseInt(themc),//parseInt($("link[id='user_theme_color']").attr('href').substring(16,17)),
             userThemePattern:
-            parseInt($("link[id='user_theme_pattern']").attr('href').substring(18,19)),
+            parseInt(themp),//parseInt($("link[id='user_theme_pattern']").attr('href').substring(18,19)),
             userThemeZoom:
-                $('#theme_zoom').val()
+            parseFloat(zoomn)//$('#theme_zoom').val()
             //parseFloat($('<html>').attr('style').substring(6,9))
         };
 
@@ -552,8 +590,70 @@ function run_error_popup_dialog() {
 
 }
 
+function saveUserRequest() {
+
+    let AuthorityList = [
+        {
+            moduleName: 'CORE',
+            roleName: 'ALL'
+        }
+    ];
+
+    var JSONObject = {
+        username:
+            $("#user_name").val(),
+        password:
+            $("#password").val(),
+        accountNonExpired:
+            'true',
+        accountNonLocked:
+            'true',
+        credentialsNonExpired:
+            'true',
+        enabled:
+            'true',
+        firstName:
+            '',
+        surname:
+            '',
+        patronymic:
+            '',
+        phoneNumber:
+            '',
+        mail:
+            '',
+        authorities:AuthorityList
+        //'CORE'+"_"+'ALL'
+           // "{\"moduleName\":\"CORE\", \"roleName\":\"ALL\"}"
+                //[{"moduleName":"CORE", "roleName":"ALL"}]
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: '/user',
+        contentType: 'application/json',
+        data: JSON.stringify(JSONObject),
+        async: true,
+        success: function (JSONObject) {
+            console.log("SUCCESS: ", JSONObject);
+            //alert('At ' + result.time
+            //    + ': ' + result.message);
+            //getFragmentAndChangeDiv('#content','/counteragent');
+        },
+
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(jqXHR.status + ' ' + jqXHR.responseText);
+        }
+    });
+}
 
 function updateUserRequest(userId) {
+    // let AuthorityList = [
+    //     {
+    //         rootAuthority: 'CORE',
+    //         subAuthority: 'ALL'
+    //     }
+    // ];
     var JSONObject = {
         id: userId,
         firstName:
@@ -570,8 +670,9 @@ function updateUserRequest(userId) {
             $("#user_password_".concat(userId)).val(),
         phoneNumber:
             $("#user_phone_number_".concat(userId)).val()
+        // authorities:AuthorityList
     };
-
+    console.log('userId:', userId, 'firstName:', $("#user_first_name_".concat(userId)).val());
     $.ajax({
         type: 'PUT',
         url: '/user',
@@ -632,10 +733,10 @@ function updateUserRoleRequest(userId) {
     });
 }
 
-function deleteUser(userId) {
+function deleteUser(userName) {
     $.ajax({
         type: 'DELETE',
-        url: '/user/'.concat(userId),
+        url: '/user/'.concat(userName),
         dataType: 'json',
         async: true,
         success: function (result) {

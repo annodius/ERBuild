@@ -24,11 +24,6 @@ public class User implements UserDetails {
     private String patronymic;
     private String phoneNumber;
     private String mail;
-
-    private Integer userThemePattern;
-
-    private BigDecimal userThemeZoom;
-
     private String employeePosition;
     private LocalDateTime deactivationDate;
     private Integer activeStatus;
@@ -157,24 +152,6 @@ public class User implements UserDetails {
         return this;
     }
 
-    public Integer getUserThemePattern() {
-        return userThemePattern;
-    }
-
-    public User setUserThemePattern(Integer userThemePattern) {
-        this.userThemePattern = userThemePattern;
-        return this;
-    }
-
-    public BigDecimal getUserThemeZoom() {
-        return userThemeZoom;
-    }
-
-    public User setUserThemeZoom(BigDecimal userThemeZoom) {
-        this.userThemeZoom = userThemeZoom;
-        return this;
-    }
-
     public String getEmployeePosition() {
         return employeePosition;
     }
@@ -218,8 +195,6 @@ public class User implements UserDetails {
                 ", patronymic='" + patronymic + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", mail='" + mail + '\'' +
-                ", userThemePattern='" + userThemePattern + '\'' +
-                ", userThemeZoom='" + userThemeZoom + '\'' +
                 ", employeePosition='" + employeePosition + '\'' +
                 ", deactivationDate=" + deactivationDate +
                 ", deactivated=" + activeStatus +

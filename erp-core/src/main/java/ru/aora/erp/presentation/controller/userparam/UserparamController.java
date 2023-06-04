@@ -2,6 +2,7 @@ package ru.aora.erp.presentation.controller.userparam;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import ru.aora.erp.domain.service.UserparamService;
 import ru.aora.erp.presentation.controller.exception.DtoValidationException;
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.StringJoiner;
 
 import static java.util.Objects.requireNonNull;
+import static org.reflections.Reflections.log;
 import static ru.aora.erp.presentation.entity.dto.settings.UserparamDtoMapper.toUserparam;
 
 @Controller
@@ -44,8 +46,20 @@ public final class UserparamController {
         return CONTROLLER_MAPPING;
     }
 
+//    @PutMapping
+//    public @ResponseBody String putUserparam(@Valid @RequestBody UserparamDto dto, BindingResult bindingResult) {
+//        DtoValidationException.throwIfHasErrors(bindingResult);
+//        return userparamService.update(toUserparam(dto)).getMsg();
+//    }
+
     @PutMapping
     public @ResponseBody String putUserparam(@Valid @RequestBody UserparamDto dto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                log.error("Validation error: {}", error.getDefaultMessage());
+            }
+        }
+
         DtoValidationException.throwIfHasErrors(bindingResult);
         return userparamService.update(toUserparam(dto)).getMsg();
     }
@@ -53,7 +67,9 @@ public final class UserparamController {
     @PostMapping
     public @ResponseBody String postUserparam(@Valid @RequestBody UserparamDto dto, BindingResult bindingResult) {
         DtoValidationException.throwIfHasErrors(bindingResult);
+        //toUserparam(dto).setUserId(dto.getUserId());
         userparamService.create(toUserparam(dto));
+
         return "Userparam was created";
     }
 

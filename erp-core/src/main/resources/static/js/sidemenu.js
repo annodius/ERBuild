@@ -176,4 +176,3 @@ var Slinky = function () {
 jQuery.fn.slinky = function (e) {
 	return new Slinky(this, e)
 };
-//# sourceMappingURL=slinky.min.js.map

@@ -33,7 +33,7 @@
 
          <li>
              <a href="javascript:;" class="button toggle_new_cb" th:data-toggle="'quick_options'" ><i class="fas fa-paint-brush"></i></a>
-			 <form th:class="'quick_options'+' hide_me'">
+			 <form id="quick-options-id" th:class="'quick_options'+' hide_me'">
                  <div class="inner">
                      <strong>
                          Масштаб
@@ -48,7 +48,8 @@
                          Фон
                          <!--<a href="javascript:;" class="no_color meta right"><i class="fas fa-check"></i> Нет</a>-->
 					</strong>
-
+					 <input type="hidden" name="userparam_id" id="userparam_id" th:value="${userparam_id}">
+					 <input type="hidden" name="user_id" id="user_id" th:value="${userp_id}">
 					<div class="style colors clear_after">
 						<a href="javascript:;" class="clr_1 left rds_5 active" data-color="1" th:name="'user_theme_color_'+${user_id}" th:value="'1'"><i class="fas fa-check"></i></a>
 						<a href="javascript:;" class="clr_2 left rds_5" data-color="2"><i class="fas fa-check" th:name="'user_theme_color_'+${user_id}" th:value="'2'"></i></a>
@@ -76,13 +77,15 @@
 				<div class="clear_after">
 					<!--<a href="settings.php" class="bttn bttn_40 bttn_simple left" >Настройки</a>-->
 					<a href="#" class="bttn bttn_40 bttn_simple left" >Настройки</a>
-					<label class="radiocheck" href="#"
+
+					<button type="submit" name="submit" class="bttn bttn_submit bttn_40 right" disabled="true">Сохранить</button>
+					<!--<label class="radiocheck" href="#"
 						   th:onclick="updateUsersetRequest([[${userparam_id}]],[[${user_id}]])">
 						<a></a>
 
 						<strong th:text="'Сохранить'">
 						</strong>
-					</label>
+					</label>-->
 
 					<!--<button th:onclick="saveKSRequest([[${id_parent}]],[[${id_grand_parent}]],[[${contract_name}]],[[${counteragent_name}]])" name="addKS" value="addKS" class="bttn bttn_submit bttn_40 right rds_5" th:data-toggle="'addKS'" >Сохранить</button>
 

@@ -2,6 +2,7 @@ package ru.aora.erp.presentation.controller.security;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.aora.erp.domain.service.user.UserAuthorityCacheService;
 import ru.aora.erp.presentation.controller.exception.DtoValidationException;
@@ -61,10 +62,13 @@ public final class UserController {
         return "User created";
     }
 
+    //@DeleteMapping("/{name}")
+    //public @ResponseBody String deleteUser(@PathVariable String name, @Validated BindingResult bindingResult) {
+    //    DtoValidationException.throwIfHasErrors(bindingResult);
+    //    return userService.delete(name).getMsg();
+    //}
     @DeleteMapping("/{name}")
-    public @ResponseBody
-    String deleteUser(@PathVariable String name, BindingResult bindingResult) {
-        DtoValidationException.throwIfHasErrors(bindingResult);
+    public @ResponseBody String deleteUser(@PathVariable String name) {
         return userService.delete(name).getMsg();
     }
 }

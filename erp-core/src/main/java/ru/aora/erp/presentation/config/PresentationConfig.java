@@ -3,11 +3,9 @@ package ru.aora.erp.presentation.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import ru.aora.erp.presentation.presenter.*;
 import ru.aora.erp.security.map.DashboardAuthorityUrlMap;
 import ru.aora.erp.presentation.entity.dto.sidebar.SidebarPresenter;
-import ru.aora.erp.presentation.presenter.AllSidebarPresenter;
-import ru.aora.erp.presentation.presenter.GarantSidebarPresenter;
-import ru.aora.erp.presentation.presenter.TestSidebarPresenter;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,15 +26,27 @@ public class PresentationConfig {
                 );
     }
 
+//    @Bean
+//    public GarantSidebarPresenter garantSidebarPresenter() {
+//        return new GarantSidebarPresenter();
+//    }
     @Bean
-    public GarantSidebarPresenter garantSidebarPresenter() {
-        return new GarantSidebarPresenter();
+    public CounteragentSidebarPresenter counteragentSidebarPresenter() {
+    return new CounteragentSidebarPresenter();
+}
+    @Bean
+    public NewSidebarPresenter newSidebarPresenter() {
+        return new NewSidebarPresenter();
     }
 
     @Bean
-    public TestSidebarPresenter testSidebarPresenter() {
-        return new TestSidebarPresenter();
+    public StartSidebarPresenter startSidebarPresenter() {
+        return new StartSidebarPresenter();
     }
+//    @Bean
+//    public TestSidebarPresenter testSidebarPresenter() {
+//        return new TestSidebarPresenter();
+//    }
 
 
 

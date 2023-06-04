@@ -1,5 +1,7 @@
 package ru.aora.erp.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -7,8 +9,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.aora.erp.domain.service.user.UserAuthorityCacheService;
 import ru.aora.erp.domain.service.user.UserService;
@@ -16,10 +20,11 @@ import ru.aora.erp.presentation.controller.dashboard.DashboardUrl;
 
 import java.util.*;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
     private static final String ALL_JS_MAPPING = "/js/**";
     private static final String ALL_CSS_MAPPING = "/css/**";
     private static final String ALL_ICONS_MAPPING = "/icons/**";
@@ -27,21 +32,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final UserAuthorityCacheService authorityCache;
+    @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
     @Autowired
     public SecurityConfig(
             UserService userService,
             PasswordEncoder passwordEncoder,
-            UserAuthorityCacheService authorityCache
+            UserAuthorityCacheService authorityCache,
+            CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler // Add this line
     ) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.authorityCache = authorityCache;
+        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler; // Add this line
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        logger.info("Entering the configure method for AuthenticationManagerBuilder"); // Add this line
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
+
+        logger.info("Exiting the configure method for AuthenticationManagerBuilder"); // Add this line
 //        String apass = passwordEncoder.encode("a");
 //        String upass = passwordEncoder.encode("u");
 //        System.out.println("a:\n" + apass + "\nu:\n"+upass);
@@ -63,6 +75,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        logger.info("Entering the configure method"); // Add this line
+
+
         http.csrf().disable();
         var urlRegistry = http.authorizeRequests()
                 .antMatchers(ALL_CSS_MAPPING).permitAll()
@@ -70,12 +85,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(ALL_ICONS_MAPPING).permitAll()
                 .antMatchers(DashboardUrl.LOGIN_MAPPING).permitAll()
                 .antMatchers(DashboardUrl.LOGOUT_MAPPING).permitAll();
-//        urlRegistry.antMatchers(DashboardUrl.INCLUDE_ROOT_MAPPING).permitAll();
+        urlRegistry.antMatchers(DashboardUrl.MAPPING).permitAll();
         defineAuthoritiesMapping(urlRegistry, authorityCache.urlAuthorityMap()); //todo enable user security
         urlRegistry.anyRequest().authenticated(); //todo enable user security
 
+        http
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+
         http.formLogin()
                 .loginPage(DashboardUrl.LOGIN_MAPPING)
+                .successHandler(customAuthenticationSuccessHandler) // Set the custom success handler
                 .defaultSuccessUrl(DashboardUrl.MAPPING)
                 .successForwardUrl(DashboardUrl.MAPPING)
                 .permitAll();
@@ -86,6 +106,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher(DashboardUrl.LOGOUT_MAPPING))
                 .logoutSuccessUrl(DashboardUrl.LOGIN_MAPPING)
                 .permitAll();
+        logger.info("Exiting the configure method"); // Add this line
     }
 
     private void defineAuthoritiesMapping(

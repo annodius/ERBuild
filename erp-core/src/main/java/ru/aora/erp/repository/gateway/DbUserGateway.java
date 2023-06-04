@@ -74,18 +74,45 @@ public class DbUserGateway implements UserGateway {
     }
 
 
+//    @Override
+//    public Optional<User> update(User user) {
+//        //Optional<DbUser> target = userRepository.findActiveByName(user.getUsername())
+//        Optional<DbUser> target = userRepository.findActiveById(user.getId())
+//                .filter(Deactivatable::isActive);
+//               // .map(this::setDeactivated);
+//        if (target.isPresent()) {
+//            userRepository.save(target.get());
+//            DbUser source = userMapper.toDbUser(user);
+//            source.setAuthorities(
+//                    moduleRolePairGateway.prepareRoleToUpdate(source.getAuthorities(), source.getId())
+//            );
+//            DbUser res = userRepository.save(source);
+//            return Optional.of(userMapper.toUser(res));
+//        }
+//        return Optional.empty();
+//    }
+
     @Override
     public Optional<User> update(User user) {
-        Optional<DbUser> target = userRepository.findActiveByName(user.getUsername())
-                .filter(Deactivatable::isActive)
-                .map(this::setDeactivated);
-        if (target.isPresent()) {
-            userRepository.save(target.get());
-            DbUser source = userMapper.toDbUser(user);
-            source.setAuthorities(
-                    moduleRolePairGateway.prepareRoleToUpdate(source.getAuthorities(), source.getId())
-            );
-            DbUser res = userRepository.save(source);
+        Optional<DbUser> dbUserOpt = userRepository.findActiveById(user.getId())
+                .filter(Deactivatable::isActive);
+
+        if (dbUserOpt.isPresent()) {
+            DbUser dbUser = dbUserOpt.get();
+
+            // copy the properties you want to update from the user parameter to dbUser
+            dbUser.setFirstName(user.getFirstName());
+            dbUser.setSurname(user.getSurname());
+            dbUser.setPatronymic(user.getPatronymic());
+            dbUser.setEmployeePosition(user.getEmployeePosition());
+            dbUser.setMail(user.getMail());
+            dbUser.setPassword(user.getPassword());
+            dbUser.setPhoneNumber(user.getPhoneNumber());
+            // ...copy any other properties you want to update...
+
+            // Note: no need to call dbUser.setAuthorities(...) because the existing authorities will be preserved
+
+            DbUser res = userRepository.save(dbUser);
             return Optional.of(userMapper.toUser(res));
         }
         return Optional.empty();

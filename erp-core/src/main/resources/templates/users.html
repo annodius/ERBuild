@@ -31,7 +31,7 @@
                 <div class="col_xxs_12 col_xs_12 col_s_12 col_m_12 col_l_12">
                     <ul class="module_menu">
                         <li class="sep_right">
-                            <a href="javascript:;" class="toggle_dialog ttp_tp" data-dialog="adduser">
+                            <a href="#" class="toggle_cb" th:data-toggle="'addUser'">
                                 <i class="fas fa-user-plus"></i> Добавить
                             </a>
                         </li>
@@ -132,12 +132,46 @@
                                             <li><a href="#" class="toggle_cb" th:data-toggle="'user_edit_'+*{id}"><i class="fas fa-user-edit"></i> Изменить</a></li>
                                             <li><a href="#" class="toggle_cb" th:data-toggle="'user_roles_'+*{id}"><i class="fas fa-key"></i> Права доступа</a></li>
                                             <li><a href="javascript:;"><i class="fas fa-ban"></i> Заблокировать</a></li>
-                                            <li><a href="javascript:;" th:onclick="deleteUser([[*{id}]])"><i class="fas fa-trash-alt"></i> Удалить</a></li>
+                                            <li><a href="javascript:;" th:onclick="deleteUser([[*{username}]])"><i class="fas fa-trash-alt"></i> Удалить</a></li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- Add user menu-->
+                        <div th:class="'addUser'+' edit hide_me'"  th:object="${usersDto}">
+                            <div class="row no_gutter">
+                                <div class="col_xxs_12 col_xs_12 col_s_12 col_m_12 col_l_12">
+                                    <a th:name="'addUser'"></a>
+                                    <div class="add_account">
+                                        <a href="javascript:;" class="toggle_cb"
+                                           th:data-toggle="'addUser'"><i class="far fa-times-circle"></i></a>
+                                    </div>
+                                </div>
+                                <div class="col_xxs_12 col_xs_12 col_s_12 col_m_6 col_l_6 push_m_3 push_l_3">
+                                    <div class="add_basic"
+                                         th:id ="'addUser'" action="#" th:object="${usersDto}">
+                                        <!--th:hidden="'false'"<form action="#" th:action="@{submitData}" class="saveForm" method="post" th:object="${counteragents}">-->
+                                        <label class="fld filler">
+                                            <em>Имя пользователя</em>
+                                            <div class="sign"><i class="fas fa-user"></i></div>
+                                            <input type="text" class="inp"  th:id ="'user_name'"  name="username"  th:value="''" />
+                                        </label>
+                                        <label class="fld filler">
+                                            <em>Пароль</em>
+                                            <div class="sign"><i class="fas fa-key"></i></div>
+                                            <input type="password" class="inp" th:id ="'password'" name="password" th:value="''" />
+                                        </label>
+
+                                        <div class="clear_after">
+                                            <button th:onclick="saveUserRequest()" name="addUser" value="addUser" class="bttn bttn_submit bttn_40 right rds_5" th:data-toggle="'addUser'" >Сохранить</button>
+                                            <a href="javascript:;" th:onclick="getFragmentAndChangeDiv('#content','/user')" class="bttn bttn_40 right rds_5 toggle_cb" th:data-toggle="'addUser'">Закрыть</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Edit user menu-->
                         <div th:class="'user_edit_'+*{id}+' edit hide_me'" th:object="${user}">
                             <div class="row no_gutter">
                                 <div class="col_xxs_12 col_xs_12 col_s_12 col_m_12 col_l_12">
@@ -192,7 +226,7 @@
                                         </label>
                                         <div class="clear_after">
                                             <button th:onclick="updateUserRequest([[*{id}]])" name="update_user" value="update_user" class="bttn bttn_submit bttn_40 right rds_5" >Сохранить</button>
-                                            <a href="javascript:;" class="bttn bttn_40 right rds_5 toggle_cb" th:data-toggle="'user_edit_'+${user.id}">Закрыть</a>
+                                            <a href="javascript:;" class="bttn bttn_40 right rds_5 toggle_cb" th:data-toggle="'user_edit_'+*{id}">Закрыть</a>
                                         </div>
                                     </div>
                                 </div>

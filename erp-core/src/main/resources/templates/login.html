@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragment/header :: header(user_pattern='0', user_color='1',user_scale='1')"/>
+<head
+		th:replace="fragment/header :: header(user_pattern='0', user_color='1',user_scale='1')"/>
 <body>
 <div th:replace="fragment/header :: preloader" />
 <!-- Container start -->
@@ -31,7 +32,7 @@
 						</div>
 						
 						<div class="col_xxs_12 col_xs_12 col_s_5 col_m_5 col_l_5">
-							<form class="form height_equal" th:action="@{/login}" method="post" autocomplete="off">
+							<form class="form height_equal" th:action="@{/login}" method="post" th:object="${usersDto}" autocomplete="off">
 								<div class="text">
 									<i class="fal fa-lock-alt"></i> Вход
 								</div>
@@ -47,7 +48,10 @@
 								</label>
 								
 								<div class="sep"></div>
-								
+<!--								<a href="#" class="toggle_cb" th:data-toggle="'addAccount'">-->
+<!--									<i class="fas fa-user-plus"></i> Новый аккаунт-->
+
+<!--								</a>-->
 								<button type="submit" name="submit" class="bttn bttn_submit bttn_40 right rds_20"><i class="fas fa-sign-in-alt"></i> Войти</button>
 								
 								<div class="clear"></div>
@@ -57,7 +61,43 @@
 								</div>
 							</form>
 						</div>
-						
+
+						<!-- Add user menu-->
+<!--						<div th:class="'addAccount'+' edit hide_me'"  th:object="${usersDto}">-->
+<!--							<div class="row no_gutter">-->
+<!--								<div class="col_xxs_12 col_xs_12 col_s_12 col_m_12 col_l_12">-->
+<!--									<a th:name="'addAccount'"></a>-->
+<!--									<div class="add_account">-->
+<!--										<a href="javascript:;" class="toggle_cb"-->
+<!--										   th:data-toggle="'addAccount'"><i class="far fa-times-circle"></i></a>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="col_xxs_12 col_xs_12 col_s_12 col_m_6 col_l_6 push_m_3 push_l_3">-->
+<!--									<div class="add_basic"-->
+<!--										 th:id ="'addAccount'" action="#" th:object="${usersDto}">-->
+<!--										&lt;!&ndash;th:hidden="'false'"<form action="#" th:action="@{submitData}" class="saveForm" method="post" th:object="${counteragents}">&ndash;&gt;-->
+<!--										<label class="fld filler">-->
+<!--											<em>Имя пользователя</em>-->
+<!--											<div class="sign"><i class="fas fa-user"></i></div>-->
+<!--											<input type="text" class="inp"  th:id ="'user_name'"  name="username"  th:value="''" />-->
+<!--										</label>-->
+<!--										<label class="fld filler">-->
+<!--											<em>Пароль</em>-->
+<!--											<div class="sign"><i class="fas fa-key"></i></div>-->
+<!--											<input type="password" class="inp" th:id ="'password'" name="password" th:value="''" />-->
+<!--										</label>-->
+
+<!--										<div class="clear_after">-->
+<!--											<button th:onclick="saveUserRequest()" name="addAccount" value="addAccount" class="bttn bttn_submit bttn_40 right rds_5" th:data-toggle="'addAccount'" >Сохранить</button>-->
+
+<!--										</div>-->
+
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+
+
 						<div class="col_xxs_12 col_xs_12 col_s_1 col_m_1 col_l_1">
 							<div class="block height_equal size_is">
 								<div class="wrap footer clr_w4">

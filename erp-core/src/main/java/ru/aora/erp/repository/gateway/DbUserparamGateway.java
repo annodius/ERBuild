@@ -9,6 +9,7 @@ import ru.aora.erp.model.entity.mapper.UserparamMapper;
 import ru.aora.erp.utils.common.CommonUtils;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -48,23 +49,52 @@ public class DbUserparamGateway implements CrudGateway<Userparam, String> {
     @Override
     public Userparam create(Userparam userparam) {
         userparam.setId(null);
+        //userparam.setUserId(userparam.getUserId());
         DbUserparam res = repository.save(mapper.toDbUserparam(userparam));
         return mapper.toUserparam(res);
     }
 
     @Override
+
     public Optional<Userparam> update(Userparam userparam) {
         Optional<DbUserparam> optionalTarget = repository.findById(userparam.getId())
-                .filter(Deactivatable::isActive)
-                .map(this::setDeactivated);
+                .filter(Deactivatable::isActive);
+
         if (optionalTarget.isPresent()) {
-            repository.save(optionalTarget.get());
-            userparam.setId(null);
-            DbUserparam res = repository.save(mapper.toDbUserparam(userparam));
+            DbUserparam dbUserparam = optionalTarget.get();
+
+            // Update the fields of the existing DbUserparam entity using the new values from the input userparam
+            // Replace the field names and setters with the actual field names and setters for your DbUserparam class
+            //dbUserparam.setUserId(userparam.getUserId());
+            if(userparam.getUserThemePattern()<100){
+            dbUserparam.setUserThemePattern(userparam.getUserThemePattern());}
+            if(userparam.getUserThemeColor()<100){
+            dbUserparam.setUserThemeColor(userparam.getUserThemeColor());}
+            if(userparam.getUserThemeZoom().compareTo(BigDecimal.valueOf(100))<0){
+            dbUserparam.setUserThemeZoom(userparam.getUserThemeZoom());}
+            // ... (continue for all fields that need to be updated)
+
+            // Save the updated DbUserparam entity
+            DbUserparam res = repository.save(dbUserparam);
+
+            // Convert and return the updated DbUserparam entity as a Userparam
             return Optional.ofNullable(mapper.toUserparam(res));
         }
         return Optional.empty();
     }
+
+//    public Optional<Userparam> update(Userparam userparam) {
+//        Optional<DbUserparam> optionalTarget = repository.findById(userparam.getId());
+//         //       .filter(Deactivatable::isActive)
+//         //       .map(this::setDeactivated);
+//        //if (optionalTarget.isPresent()) {
+//        //    repository.save(optionalTarget.get());
+//         //   userparam.setId(null);
+//            DbUserparam res = repository.save(mapper.toDbUserparam(userparam));
+//            return Optional.ofNullable(mapper.toUserparam(res));
+//        //}
+//       // return Optional.empty();
+//    }
 
     @Override
     public Optional<Userparam> delete(String id) {

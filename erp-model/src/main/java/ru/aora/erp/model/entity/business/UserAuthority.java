@@ -1,5 +1,7 @@
 package ru.aora.erp.model.entity.business;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Objects;
@@ -9,7 +11,9 @@ public final class UserAuthority implements GrantedAuthority {
     private final String moduleName;
     private final String roleName;
 
-    public UserAuthority(String moduleName, String roleName) {
+    @JsonCreator
+    public UserAuthority(@JsonProperty("moduleName") String moduleName,
+                         @JsonProperty("roleName") String roleName) {
         this.moduleName = moduleName;
         this.roleName = roleName;
     }

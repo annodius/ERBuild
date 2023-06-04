@@ -1,3 +1,16 @@
+var themepat;
+var themecol;
+var zoom;
+
+// Set the initial value for zoom
+$(document).ready(function() {
+	zoom = $('#topbar .nav .quick_options #theme_zoom').val() || 100;
+	$('#topbar .nav .quick_options .current_zoom').text(Math.round(zoom * 100) + '%');
+});
+// Set the initial value for theme
+themecol = $('#topbar .nav .quick_options .colors a.active').data('color')|| 100;
+// Set the initial value for pattern
+themepat = $('#topbar .nav .quick_options .patterns a.active').data('pattern')|| 100;
 function loadOptions () {
 
 	////////////////////////////////////
@@ -205,7 +218,7 @@ function loadOptions () {
 
 }
 
-$(document).ready(function($) {
+	$(document).ready(function($) {
 
 	// Sidebar toggle
 
@@ -217,7 +230,7 @@ $(document).ready(function($) {
 	// Quick options
 
 	$('#topbar .nav .quick_options #theme_zoom').on('change', function() {
-		var zoom = $(this).val();
+		zoom = $(this).val();
 		$('html').css('zoom', zoom);
 		$('#topbar .nav .quick_options .current_zoom').text(Math.round(zoom * 100) + '%');
 
@@ -231,13 +244,15 @@ $(document).ready(function($) {
 			$('#topbar .nav .quick_options .no_color').removeClass('active');
 			$('#topbar .nav .quick_options .colors a').not(this).removeClass('active');
 
-			var theme = $(this).data('color');
-			$('#user_theme_color').attr('href', 'css/theme-color-' + theme + '.css');
+			themecol = $(this).data('color');
+			$('#user_theme_color').attr('href', 'css/theme-color-' + themecol + '.css');
 
 			$('#topbar .nav .quick_options button.bttn').prop('disabled', false);
 			//updateUsersetRequest();
 		});
 	});
+
+
 
 	$('#topbar .nav .quick_options .no_color').click(function() {
 		$(this).addClass('active');
@@ -253,8 +268,8 @@ $(document).ready(function($) {
 			$('#topbar .nav .quick_options .no_pattern').removeClass('active');
 			$('#topbar .nav .quick_options .patterns a').not(this).removeClass('active');
 
-			var theme = $(this).data('pattern');
-			$('#user_theme_pattern').attr('href', 'css/theme-pattern-' + theme + '.css');
+			themepat = $(this).data('pattern');
+			$('#user_theme_pattern').attr('href', 'css/theme-pattern-' + themepat + '.css');
 
 			$('#topbar .nav .quick_options button.bttn').prop('disabled', false);
 			//updateUsersetRequest();
@@ -269,7 +284,23 @@ $(document).ready(function($) {
 		$('#user_theme_pattern').attr('href', 'css/theme-pattern-0.css');
 		$('#topbar .nav .quick_options button.bttn').prop('disabled', false);
 	});
+//$(document).ready(function() {
+	// ... Your existing code ...
 
+	// Add the event listener for the form's submit event
+		$('#quick-options-id').on('submit', function(event) {
+			console.log('Form submit event triggered'); // Add this line
+			event.preventDefault(); // Prevent the default form submission behavior
+			// Retrieve userparam_id and user_id values as needed
+			var userparam_id = $('#userparam_id').val();
+			var user_id = $('#user_id').val();
+
+			// Pass the theme variable as an argument
+			handleUserSettings(userparam_id, user_id, themecol, themepat, zoom); // Call the function to handle user settings
+		});
+
+	// ... Your existing code ...
+//	});
 // Toggle content block
 
 	$('.toggle_new_cb').click(function() {

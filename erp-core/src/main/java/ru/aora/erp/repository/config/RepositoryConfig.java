@@ -85,9 +85,9 @@ public class RepositoryConfig {
         //dataSource.setPassword(dbUri.getUserInfo().split(":")[1]);
         //dataSource.setUrl("jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?sslmode=require");
 
-        dataSource.setUsername("ggoktkxtomizma");
-        dataSource.setPassword("f5e9844085514ff9fa07c26533d9de7aa099ad9c54efa32078555932a426565f");
-        dataSource.setUrl("jdbc:postgresql://ec2-54-75-184-144.eu-west-1.compute.amazonaws.com:5432/dfnffn8bn8u0gi");
+        dataSource.setUsername("swsbezvxxncqlr");
+        dataSource.setPassword("764ba58d02865eee99876b48f114ce41d5a5a5354c76357a0cbdc556a441dfa3");
+        dataSource.setUrl("jdbc:postgresql://ec2-54-75-102-122.eu-west-1.compute.amazonaws.com:5432/d44ckbn28noqsb");
         return dataSource;
     }
 

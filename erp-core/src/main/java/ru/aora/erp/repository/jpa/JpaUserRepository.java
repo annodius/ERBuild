@@ -19,4 +19,7 @@ public interface JpaUserRepository extends JpaRepository<DbUser, String> {
 
     @Query(value = "SELECT u FROM DbUser u WHERE u.username = :name AND u.deactivationDate IS NULL")
     Optional<DbUser> findActiveByName(String name);
+
+    @Query(value = "SELECT u FROM DbUser u WHERE u.id = :userId AND u.deactivationDate IS NULL")
+    Optional<DbUser> findActiveById(String userId);
 }

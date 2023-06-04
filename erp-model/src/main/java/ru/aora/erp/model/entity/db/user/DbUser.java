@@ -53,13 +53,6 @@ public class DbUser implements Serializable, Deactivatable {
 
     @Column(name = "mail")
     private String mail;
-
-    @Column(name = "user_theme_pattern")
-    private Integer userThemePattern;
-
-    @Column(name = "user_theme_zoom")
-    private BigDecimal userThemeZoom;
-
     @Column(name = "employee_position")
     private String employeePosition;
 
@@ -188,24 +181,6 @@ public class DbUser implements Serializable, Deactivatable {
         this.mail = mail;
         return this;
     }
-
-    public Integer getUserThemePattern() {
-        return userThemePattern;
-    }
-
-    public DbUser setUserThemePattern(Integer userThemePattern) {
-        this.userThemePattern = userThemePattern;
-        return this;
-    }
-
-    public BigDecimal getUserThemeZoom() {
-        return userThemeZoom;
-    }
-
-    public DbUser setUserThemeZoom(BigDecimal userThemeZoom) {
-        this.userThemeZoom = userThemeZoom;
-        return this;
-    }
     public String getEmployeePosition() {
         return employeePosition;
     }
@@ -265,8 +240,6 @@ public class DbUser implements Serializable, Deactivatable {
                 .add("patronymic='" + patronymic + "'")
                 .add("phoneNumber='" + phoneNumber + "'")
                 .add("mail='" + mail + "'")
-                .add("userThemePattern='" + userThemePattern + "'")
-                .add("userThemeZoom='" + userThemeZoom + "'")
                 .add("employeePosition='" + employeePosition + "'")
                 .add("authorities=" + authorities)
                 .add("deactivationDate=" + deactivationDate)

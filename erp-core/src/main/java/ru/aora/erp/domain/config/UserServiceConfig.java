@@ -13,6 +13,7 @@ import ru.aora.erp.repository.jpa.JpaModuleRepository;
 import ru.aora.erp.repository.jpa.JpaModuleRolePairRepository;
 import ru.aora.erp.repository.jpa.JpaRoleRepository;
 import ru.aora.erp.repository.jpa.JpaUserRepository;
+import ru.aora.erp.security.CustomAuthenticationSuccessHandler;
 import ru.aora.erp.security.map.DashboardAuthorityUrlMap;
 
 import java.util.List;
@@ -53,7 +54,10 @@ public class UserServiceConfig {
     ) {
         return new DbUserGateway(userRepository, dbModuleRolePairGateway);
     }
-
+    @Bean
+    public CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler(UserService userService) {
+        return new CustomAuthenticationSuccessHandler(userService);
+    }
     @Bean
     public UserService userService(
             UserGateway gateway,
